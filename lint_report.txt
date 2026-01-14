@@ -1,0 +1,123 @@
+
+> restaurant-pos@0.0.0 lint
+> eslint .
+
+
+/Users/rakzzm/Documents/Applications/Advakkad POS Application/src/components/Chatbot.tsx
+   3:3  error  'MessageCircle' is defined but never used  @typescript-eslint/no-unused-vars
+  14:3  error  'Sparkles' is defined but never used       @typescript-eslint/no-unused-vars
+  16:3  error  'Zap' is defined but never used            @typescript-eslint/no-unused-vars
+  23:3  error  'Star' is defined but never used           @typescript-eslint/no-unused-vars
+
+/Users/rakzzm/Documents/Applications/Advakkad POS Application/src/contexts/AuthContext.tsx
+  67:25  error    '_' is assigned a value but never used                                                                                          @typescript-eslint/no-unused-vars
+  98:17  warning  Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components  react-refresh/only-export-components
+
+/Users/rakzzm/Documents/Applications/Advakkad POS Application/src/pages/AIInsights.tsx
+    1:27  error  'useEffect' is defined but never used                   @typescript-eslint/no-unused-vars
+    6:3   error  'ShoppingCart' is defined but never used                @typescript-eslint/no-unused-vars
+    9:3   error  'Eye' is defined but never used                         @typescript-eslint/no-unused-vars
+   12:3   error  'Activity' is defined but never used                    @typescript-eslint/no-unused-vars
+   28:3   error  'AreaChart' is defined but never used                   @typescript-eslint/no-unused-vars
+   29:3   error  'Area' is defined but never used                        @typescript-eslint/no-unused-vars
+   30:3   error  'BarChart' is defined but never used                    @typescript-eslint/no-unused-vars
+   31:3   error  'Bar' is defined but never used                         @typescript-eslint/no-unused-vars
+  113:10  error  'selectedMetric' is assigned a value but never used     @typescript-eslint/no-unused-vars
+  113:26  error  'setSelectedMetric' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  114:10  error  'isLoading' is assigned a value but never used          @typescript-eslint/no-unused-vars
+  114:21  error  'setIsLoading' is assigned a value but never used       @typescript-eslint/no-unused-vars
+  116:68  error  'color' is assigned a value but never used              @typescript-eslint/no-unused-vars
+
+/Users/rakzzm/Documents/Applications/Advakkad POS Application/src/pages/Attendance.tsx
+  10:3  error  'Filter' is defined but never used                     @typescript-eslint/no-unused-vars
+  13:3  error  'Camera' is defined but never used                     @typescript-eslint/no-unused-vars
+  18:6  error  'AttendanceRecord' is defined but never used           @typescript-eslint/no-unused-vars
+  34:5  error  'todayAttendance' is assigned a value but never used   @typescript-eslint/no-unused-vars
+  35:5  error  'loading' is assigned a value but never used           @typescript-eslint/no-unused-vars
+  39:5  error  'updateAttendance' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/rakzzm/Documents/Applications/Advakkad POS Application/src/pages/AuditTrail.tsx
+   3:18  error    'Filter' is defined but never used                                                                            @typescript-eslint/no-unused-vars
+  25:6   warning  React Hook useEffect has a missing dependency: 'fetchLogs'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+  71:29  error    Unexpected any. Specify a different type                                                                      @typescript-eslint/no-explicit-any
+
+/Users/rakzzm/Documents/Applications/Advakkad POS Application/src/pages/CustomerMenu.tsx
+    1:27   error  'useEffect' is defined but never used          @typescript-eslint/no-unused-vars
+    9:11   error  'navigate' is assigned a value but never used  @typescript-eslint/no-unused-vars
+   99:18   error  'error' is defined but never used              @typescript-eslint/no-unused-vars
+  296:140  error  Unexpected any. Specify a different type       @typescript-eslint/no-explicit-any
+
+/Users/rakzzm/Documents/Applications/Advakkad POS Application/src/pages/Dashboard.tsx
+   10:3   error  'LineChart' is defined but never used        @typescript-eslint/no-unused-vars
+   11:3   error  'Line' is defined but never used             @typescript-eslint/no-unused-vars
+   32:3   error  'Eye' is defined but never used              @typescript-eslint/no-unused-vars
+  161:11  error  'orders' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/Users/rakzzm/Documents/Applications/Advakkad POS Application/src/pages/Invoices.tsx
+    6:3   error  'Filter' is defined but never used                          @typescript-eslint/no-unused-vars
+   10:3   error  'Edit' is defined but never used                            @typescript-eslint/no-unused-vars
+   11:3   error  'Trash2' is defined but never used                          @typescript-eslint/no-unused-vars
+   18:3   error  'Calendar' is defined but never used                        @typescript-eslint/no-unused-vars
+   22:3   error  'CreditCard' is defined but never used                      @typescript-eslint/no-unused-vars
+   23:3   error  'Printer' is defined but never used                         @typescript-eslint/no-unused-vars
+   24:3   error  'Settings' is defined but never used                        @typescript-eslint/no-unused-vars
+   25:3   error  'Zap' is defined but never used                             @typescript-eslint/no-unused-vars
+   26:3   error  'Star' is defined but never used                            @typescript-eslint/no-unused-vars
+   31:10  error  'ConfirmDialog' is defined but never used                   @typescript-eslint/no-unused-vars
+   37:5   error  'loading' is assigned a value but never used                @typescript-eslint/no-unused-vars
+   38:5   error  'error' is assigned a value but never used                  @typescript-eslint/no-unused-vars
+   41:5   error  'updateInvoice' is assigned a value but never used          @typescript-eslint/no-unused-vars
+   42:5   error  'deleteInvoice' is assigned a value but never used          @typescript-eslint/no-unused-vars
+   47:5   error  'generateBulkPDF' is assigned a value but never used        @typescript-eslint/no-unused-vars
+   54:10  error  'selectedInvoices' is assigned a value but never used       @typescript-eslint/no-unused-vars
+   54:28  error  'setSelectedInvoices' is assigned a value but never used    @typescript-eslint/no-unused-vars
+   56:10  error  'isEditModalOpen' is assigned a value but never used        @typescript-eslint/no-unused-vars
+   56:27  error  'setIsEditModalOpen' is assigned a value but never used     @typescript-eslint/no-unused-vars
+   58:10  error  'isDeleteDialogOpen' is assigned a value but never used     @typescript-eslint/no-unused-vars
+   58:30  error  'setIsDeleteDialogOpen' is assigned a value but never used  @typescript-eslint/no-unused-vars
+  161:66  error  Unexpected any. Specify a different type                    @typescript-eslint/no-explicit-any
+  207:11  error  Unexpected lexical declaration in case block                no-case-declarations
+  211:11  error  Unexpected lexical declaration in case block                no-case-declarations
+
+/Users/rakzzm/Documents/Applications/Advakkad POS Application/src/pages/Login.tsx
+  26:14  error  'err' is defined but never used  @typescript-eslint/no-unused-vars
+
+/Users/rakzzm/Documents/Applications/Advakkad POS Application/src/pages/Members.tsx
+    2:100  error  'Filter' is defined but never used            @typescript-eslint/no-unused-vars
+   25:20   error  'loading' is assigned a value but never used  @typescript-eslint/no-unused-vars
+   25:29   error  'error' is assigned a value but never used    @typescript-eslint/no-unused-vars
+  204:9    error  Unexpected lexical declaration in case block  no-case-declarations
+
+/Users/rakzzm/Documents/Applications/Advakkad POS Application/src/pages/Orders.tsx
+    2:42   error  'AlertCircle' is defined but never used       @typescript-eslint/no-unused-vars
+    2:85   error  'Filter' is defined but never used            @typescript-eslint/no-unused-vars
+    2:93   error  'Calendar' is defined but never used          @typescript-eslint/no-unused-vars
+    2:159  error  'Star' is defined but never used              @typescript-eslint/no-unused-vars
+   38:19   error  'loading' is assigned a value but never used  @typescript-eslint/no-unused-vars
+   38:28   error  'error' is assigned a value but never used    @typescript-eslint/no-unused-vars
+  246:11   error  Unexpected lexical declaration in case block  no-case-declarations
+
+/Users/rakzzm/Documents/Applications/Advakkad POS Application/src/pages/Products.tsx
+   10:3   error  'ShoppingCart' is defined but never used            @typescript-eslint/no-unused-vars
+   12:3   error  'TrendingUp' is defined but never used              @typescript-eslint/no-unused-vars
+   13:3   error  'Filter' is defined but never used                  @typescript-eslint/no-unused-vars
+   16:3   error  'Heart' is defined but never used                   @typescript-eslint/no-unused-vars
+   17:3   error  'Share2' is defined but never used                  @typescript-eslint/no-unused-vars
+   18:3   error  'BarChart3' is defined but never used               @typescript-eslint/no-unused-vars
+   19:3   error  'DollarSign' is defined but never used              @typescript-eslint/no-unused-vars
+   20:3   error  'Tag' is defined but never used                     @typescript-eslint/no-unused-vars
+   21:3   error  'Clock' is defined but never used                   @typescript-eslint/no-unused-vars
+   39:22  error  'setPriceRange' is assigned a value but never used  @typescript-eslint/no-unused-vars
+   45:58  error  Unexpected any. Specify a different type            @typescript-eslint/no-explicit-any
+  110:32  error  Unexpected any. Specify a different type            @typescript-eslint/no-explicit-any
+  129:32  error  Unexpected any. Specify a different type            @typescript-eslint/no-explicit-any
+  134:34  error  Unexpected any. Specify a different type            @typescript-eslint/no-explicit-any
+  359:48  error  Unexpected any. Specify a different type            @typescript-eslint/no-explicit-any
+  476:52  error  Unexpected any. Specify a different type            @typescript-eslint/no-explicit-any
+
+/Users/rakzzm/Documents/Applications/Advakkad POS Application/src/pages/QRCodeGenerator.tsx
+   1:27  error  'useRef' is defined but never used          @typescript-eslint/no-unused-vars
+  77:15  error  'qrURL' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+✖ 90 problems (88 errors, 2 warnings)
+

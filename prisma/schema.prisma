@@ -1,0 +1,200 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  password  String
+  role      String   @default("user") // 'admin' | 'manager' | 'user'
+  locationId String?
+  lastLogin DateTime?
+  status    String   @default("active") // 'active' | 'inactive'
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  auditLogs AuditLog[]
+
+  @@map("users")
+}
+
+model Product {
+  id           String   @id @default(uuid())
+  name         String
+  description  String
+  price        Float
+  category     String
+  stock        Int
+  imageUrl     String
+  sku          String?
+  costPrice    Float?
+  profitMargin Float?
+  tags         String?
+  isFeatured   Boolean  @default(false)
+  isAvailable  Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  orderItems   OrderItem[]
+
+  @@map("products")
+}
+
+model Order {
+  id            String   @id @default(uuid())
+  orderNumber   String   @unique
+  customerName  String
+  memberId      String?
+  member        Member?  @relation(fields: [memberId], references: [id])
+  total         Float
+  subtotal      Float
+  discount      Float
+  serviceTax    Float
+  status        String   // 'pending' | 'completed' | 'cancelled'
+  paymentMethod String
+  date          DateTime
+  couponCode    String?
+  items         OrderItem[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  source        String   @default("POS") // 'POS' | 'QR'
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String   @id @default(uuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id])
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  name      String   // Snapshot
+  price     Float    // Snapshot
+  quantity  Int
+
+  @@map("order_items")
+}
+
+model Member {
+  id         String   @id @default(uuid())
+  memberId   String   @unique
+  name       String
+  email      String
+  phone      String
+  tier       String   // 'bronze' | 'silver' | 'gold' | 'platinum'
+  points     Int
+  totalSpent Float
+  status     String   // 'active' | 'inactive'
+  visits     Int
+  joinDate   DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  orders     Order[]
+
+  @@map("members")
+}
+
+model Staff {
+  id                 String   @id @default(uuid())
+  employeeId         String   @unique
+  name               String
+  email              String
+  phone              String
+  position           String
+  department         String
+  hireDate           DateTime
+  salary             Float
+  status             String   // 'active' | 'inactive' | 'on-leave'
+  leaveBalanceAnnual Int
+  leaveBalanceSick   Int
+  leaveBalancePersonal Int
+  performanceRating  Float
+  lastReview         DateTime?
+  leaveRequests      LeaveRequest[]
+  attendanceRecords  Attendance[]
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@map("staff")
+}
+
+model LeaveRequest {
+  id          String   @id @default(uuid())
+  staffId     String
+  staff       Staff    @relation(fields: [staffId], references: [id])
+  type        String   // 'annual' | 'sick' | 'personal' | 'emergency'
+  startDate   DateTime
+  endDate     DateTime
+  reason      String
+  status      String   // 'pending' | 'approved' | 'rejected'
+  appliedDate DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("leave_requests")
+}
+
+model Attendance {
+  id         String   @id @default(uuid())
+  staffId    String
+  staff      Staff    @relation(fields: [staffId], references: [id])
+  date       DateTime
+  punchIn    String?
+  punchOut   String?
+  totalHours Float
+  status     String   // 'present' | 'absent' | 'late' | 'half-day'
+  location   String?
+  notes      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("attendance")
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  action    String
+  tableName String
+  recordId  String
+  oldData   String?
+  newData   String?
+  ipAddress String?
+  createdAt DateTime @default(now())
+
+  @@map("audit_logs")
+}
+
+model Invoice {
+  id               String   @id @default(uuid())
+  invoiceNumber    String   @unique
+  customerName     String
+  grandTotal       Float
+  status           String
+  issueDate        DateTime
+  dueDate          DateTime
+  paymentMethod    String?
+  items            InvoiceItem[]
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@map("invoices")
+}
+
+model InvoiceItem {
+  id          String   @id @default(uuid())
+  invoiceId   String
+  invoice     Invoice  @relation(fields: [invoiceId], references: [id])
+  description String
+  quantity    Int
+  unitPrice   Float
+  total       Float
+
+  @@map("invoice_items")
+}
