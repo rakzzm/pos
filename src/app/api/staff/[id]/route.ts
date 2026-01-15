@@ -5,13 +5,10 @@ const prisma = new PrismaClient();
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    // Await params first if in Next.js 15+ or strictly typed recent versions, 
-    // but standard Next 14 handles it. We'll access params.id directly or await if necessary.
-    // Given the context is likely standard Next.js App Router:
-    const id = params.id;
+    const { id } = await params;
     const data = await request.json();
 
     const updateData: any = { ...data };
@@ -40,10 +37,10 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = params.id;
+    const { id } = await params;
     await prisma.staff.delete({
       where: { id },
     });

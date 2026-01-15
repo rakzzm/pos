@@ -12,7 +12,16 @@ export function AddEditStaffModal({ isOpen, onClose, staffId }: AddEditStaffModa
   const { staff, addStaff, updateStaff } = useStaffStore();
   const [loading, setLoading] = useState(false);
   
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    name: string;
+    email: string;
+    phone: string;
+    position: string;
+    department: string;
+    hireDate: string;
+    salary: number;
+    status: 'active' | 'inactive' | 'on-leave';
+  }>({
     name: '',
     email: '',
     phone: '',
@@ -198,7 +207,7 @@ export function AddEditStaffModal({ isOpen, onClose, staffId }: AddEditStaffModa
                         <select 
                             className="w-full p-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-pink-500"
                             value={formData.status}
-                            onChange={e => setFormData({...formData, status: e.target.value})}
+                            onChange={e => setFormData({...formData, status: e.target.value as 'active' | 'inactive' | 'on-leave'})}
                         >
                             <option value="active">Active</option>
                             <option value="inactive">Inactive</option>

@@ -55,7 +55,7 @@ async function main() {
     }
   ];
 
-  const createdStaff = [];
+  const createdStaff: { id: string; employeeId: string }[] = [];
 
   for (const staff of staffMembers) {
     const { leaveBalance, performance, ...data } = staff;
