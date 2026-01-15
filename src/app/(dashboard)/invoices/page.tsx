@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { FileText, Download, Eye, Send, Plus, Search, CheckCircle, Clock, XCircle } from 'lucide-react';
 import { useInvoiceStore } from '../../../stores/invoiceStore';
 import { Modal } from '../../../components/Modal';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 export default function InvoicesPage() {
   const { invoices, loading, fetchInvoices } = useInvoiceStore();
@@ -58,9 +60,78 @@ export default function InvoicesPage() {
     sent: invoices.filter((i) => i.status === 'sent').length,
     draft: invoices.filter((i) => i.status === 'draft').length,
     overdue: invoices.filter((i) => i.status === 'overdue').length,
-    totalRevenue: invoices
       .filter((i) => i.status === 'paid')
       .reduce((sum, i) => sum + (i.grandTotal || 0), 0),
+  };
+
+  const handleDownloadPDF = (invoice: any) => {
+    const doc = new jsPDF();
+
+    // Add Company Logo/Header
+    doc.setFontSize(20);
+    doc.setTextColor(40, 40, 40);
+    doc.text('Adavakkad Collections', 14, 22);
+
+    doc.setFontSize(10);
+    doc.setTextColor(100, 100, 100);
+    doc.text('123 Main Street, City', 14, 28);
+    doc.text('Phone: +91 1234567890', 14, 33);
+    doc.text('Email: info@adavakkad.com', 14, 38);
+
+    // Invoice Title
+    doc.setFontSize(16);
+    doc.setTextColor(79, 70, 229); // Indigo color
+    doc.text('INVOICE', 140, 22);
+
+    // Invoice Details
+    doc.setFontSize(10);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`Invoice #: ${invoice.invoiceNumber}`, 140, 28);
+    doc.text(`Date: ${new Date(invoice.issueDate).toLocaleDateString()}`, 140, 33);
+    doc.text(`Status: ${invoice.status.toUpperCase()}`, 140, 38);
+
+    // Customer Details
+    doc.text('Bill To:', 14, 50);
+    doc.setFontSize(11);
+    doc.text(invoice.customerName, 14, 56);
+    
+    // Items Table
+    const tableColumn = ["Item", "Quantity", "Price", "Total"];
+    const tableRows = invoice.items?.map((item: any) => [
+      item.description,
+      item.quantity,
+      `₹${item.unitPrice}`,
+      `₹${item.total}`
+    ]) || [];
+
+    autoTable(doc, {
+      startY: 65,
+      head: [tableColumn],
+      body: tableRows,
+      theme: 'grid',
+      headStyles: { fillColor: [79, 70, 229] },
+      styles: { fontSize: 10, cellPadding: 3 },
+    });
+
+    // Totals
+    const finalY = (doc as any).lastAutoTable.finalY + 10;
+    doc.setFontSize(10);
+    doc.text(`Subtotal:`, 140, finalY);
+    doc.text(`₹${(invoice.grandTotal || 0).toFixed(2)}`, 170, finalY, { align: 'right' });
+    
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.text(`Grand Total:`, 140, finalY + 7);
+    doc.text(`₹${(invoice.grandTotal || 0).toFixed(2)}`, 170, finalY + 7, { align: 'right' });
+
+    // Footer
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(150, 150, 150);
+    doc.text('Thank you for your business!', 105, 280, { align: 'center' });
+
+    // Save
+    doc.save(`Invoice_${invoice.invoiceNumber}.pdf`);
   };
 
   return (
@@ -224,7 +295,11 @@ export default function InvoicesPage() {
                         <button className="text-blue-600 hover:text-blue-700 p-2 hover:bg-blue-50 rounded-lg transition-colors">
                           <Send className="h-4 w-4" />
                         </button>
-                        <button className="text-green-600 hover:text-green-700 p-2 hover:bg-green-50 rounded-lg transition-colors">
+                        <button 
+                          onClick={() => handleDownloadPDF(invoice)}
+                          title="Download PDF"
+                          className="text-green-600 hover:text-green-700 p-2 hover:bg-green-50 rounded-lg transition-colors"
+                        >
                           <Download className="h-4 w-4" />
                         </button>
                       </div>

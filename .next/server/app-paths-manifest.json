@@ -1,7 +1,13 @@
 {
+  "/api/invoices/route": "app/api/invoices/route.js",
+  "/api/staff/route": "app/api/staff/route.js",
+  "/api/attendance/route": "app/api/attendance/route.js",
   "/login/page": "app/login/page.js",
-  "/(dashboard)/members/page": "app/(dashboard)/members/page.js",
-  "/(dashboard)/orders/page": "app/(dashboard)/orders/page.js",
   "/(dashboard)/top-sales/page": "app/(dashboard)/top-sales/page.js",
-  "/(dashboard)/page": "app/(dashboard)/page.js"
+  "/(dashboard)/page": "app/(dashboard)/page.js",
+  "/(dashboard)/orders/page": "app/(dashboard)/orders/page.js",
+  "/(dashboard)/members/page": "app/(dashboard)/members/page.js",
+  "/(dashboard)/invoices/page": "app/(dashboard)/invoices/page.js",
+  "/(dashboard)/attendance/page": "app/(dashboard)/attendance/page.js",
+  "/(dashboard)/staff/page": "app/(dashboard)/staff/page.js"
 }

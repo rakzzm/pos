@@ -85,6 +85,36 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(dashboard)/products/page.js"
+    ],
+    "/(dashboard)/invoices/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboard)/invoices/page.js"
+    ],
+    "/api/invoices/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/invoices/route.js"
+    ],
+    "/(dashboard)/staff/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboard)/staff/page.js"
+    ],
+    "/api/staff/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/staff/route.js"
+    ],
+    "/(dashboard)/attendance/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboard)/attendance/page.js"
+    ],
+    "/api/attendance/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/attendance/route.js"
     ]
   }
 }
