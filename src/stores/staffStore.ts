@@ -53,10 +53,23 @@ export type PayrollRecord = {
   notes?: string;
 };
 
+export type AttendanceRecord = {
+  id: string;
+  staffId: string;
+  staffName?: string;
+  date: string;
+  punchIn?: string;
+  punchOut?: string;
+  totalHours: number;
+  status: string;
+  notes?: string;
+};
+
 type StaffStore = {
   staff: StaffMember[];
   leaveRequests: LeaveRequest[];
   payrollRecords: PayrollRecord[];
+  attendanceRecords: AttendanceRecord[];
   loading: boolean;
   error: string | null;
   fetchStaff: () => Promise<void>;
@@ -69,12 +82,21 @@ type StaffStore = {
   fetchPayroll: () => Promise<void>;
   runPayroll: (staffId: string, periodStart: string, periodEnd: string, bonuses: number, deductions: number) => Promise<void>;
   markPayrollPaid: (id: string, paymentMethod: string) => Promise<void>;
+
+  // Attendance Actions
+  fetchAttendance: (month?: string) => Promise<void>;
+  clockIn: (staffId: string) => Promise<void>;
+  clockOut: (id: string, time: string, totalHours: number) => Promise<void>;
+  addAttendance: (record: any) => Promise<void>; // Manual add
+  updateAttendance: (id: string, record: any) => Promise<void>;
+  deleteAttendance: (id: string) => Promise<void>;
 };
 
 export const useStaffStore = create<StaffStore>((set, get) => ({
   staff: [],
   leaveRequests: [],
   payrollRecords: [],
+  attendanceRecords: [],
   loading: false,
   error: null,
 
@@ -263,5 +285,116 @@ export const useStaffStore = create<StaffStore>((set, get) => ({
     } finally {
       set({ loading: false });
     }
+  },
+
+  fetchAttendance: async (month) => {
+    set({ loading: true, error: null });
+    try {
+      let url = '/api/attendance';
+      if (month) url += `?month=${month}`;
+      
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Failed to fetch attendance');
+      const data = await response.json();
+      
+      const mapped = data.map((r: any) => ({
+          ...r,
+          date: new Date(r.date).toISOString().split('T')[0],
+          staffName: r.staff?.name
+      }));
+      
+      set({ attendanceRecords: mapped });
+    } catch (error) {
+      set({ error: (error as Error).message });
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  clockIn: async (staffId) => {
+    set({ loading: true, error: null });
+    try {
+      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const response = await fetch('/api/attendance', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'clock-in', staffId, time })
+      });
+      
+      if (!response.ok) {
+          const err = await response.json();
+          throw new Error(err.error || 'Failed to clock in');
+      }
+      await get().fetchAttendance();
+    } catch (error) {
+      set({ error: (error as Error).message });
+      throw error;
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  clockOut: async (id, time, totalHours) => {
+    set({ loading: true, error: null });
+    try {
+      const response = await fetch(`/api/attendance/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'clock-out', time, totalHours })
+      });
+      if (!response.ok) throw new Error('Failed to clock out');
+      await get().fetchAttendance();
+    } catch (error) {
+       set({ error: (error as Error).message });
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  addAttendance: async (record) => {
+     set({ loading: true });
+     try {
+         const response = await fetch('/api/attendance', {
+             method: 'POST',
+             headers: {'Content-Type': 'application/json'},
+             body: JSON.stringify({ action: 'manual', ...record })
+         });
+         if(!response.ok) throw new Error('Failed to add record');
+         await get().fetchAttendance();
+     } catch (error) {
+         set({error: (error as Error).message});
+     } finally {
+         set({loading: false});
+     }
+  },
+
+  updateAttendance: async (id, record) => {
+      set({ loading: true });
+      try {
+          const response = await fetch(`/api/attendance/${id}`, {
+              method: 'PUT',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify(record)
+          });
+          if(!response.ok) throw new Error('Failed to update record');
+          await get().fetchAttendance();
+      } catch (error) {
+          set({error: (error as Error).message});
+      } finally {
+          set({loading: false});
+      }
+  },
+
+  deleteAttendance: async (id) => {
+      set({ loading: true });
+      try {
+          const response = await fetch(`/api/attendance/${id}`, { method: 'DELETE' });
+          if(!response.ok) throw new Error('Failed to delete record');
+          set(state => ({ attendanceRecords: state.attendanceRecords.filter(r => r.id !== id) }));
+      } catch (error) {
+          set({error: (error as Error).message});
+      } finally {
+          set({loading: false});
+      }
   }
 }));
