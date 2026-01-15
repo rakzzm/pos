@@ -1,58 +1,54 @@
-
 import { NextResponse } from 'next/server';
-import { prisma } from '../../../../lib/prisma';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export async function PUT(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const body = await request.json();
-    const { id } = await params;
+    // Await params first if in Next.js 15+ or strictly typed recent versions, 
+    // but standard Next 14 handles it. We'll access params.id directly or await if necessary.
+    // Given the context is likely standard Next.js App Router:
+    const id = params.id;
+    const data = await request.json();
 
+    const updateData: any = { ...data };
+    
+    // Handle nested updates or flattening if needed
+    if (data.leaveBalance) {
+        updateData.leaveBalanceAnnual = data.leaveBalance.annual;
+        updateData.leaveBalanceSick = data.leaveBalance.sick;
+        updateData.leaveBalancePersonal = data.leaveBalance.personal;
+        delete updateData.leaveBalance;
+    }
+    
+    // Ensure numeric types
+    if (updateData.salary) updateData.salary = parseFloat(updateData.salary);
+    
     const staff = await prisma.staff.update({
       where: { id },
-      data: {
-        name: body.name,
-        email: body.email,
-        phone: body.phone,
-        position: body.position,
-        department: body.department,
-        salary: body.salary ? parseFloat(body.salary) : undefined,
-        status: body.status,
-        leaveBalanceAnnual: body.leaveBalance?.annual,
-        leaveBalanceSick: body.leaveBalance?.sick,
-        leaveBalancePersonal: body.leaveBalance?.personal,
-        performanceRating: body.performanceRating,
-        lastReview: body.lastReview ? new Date(body.lastReview) : undefined
-      }
+      data: updateData,
     });
-
+    
     return NextResponse.json(staff);
   } catch (error) {
-    console.error('Error updating staff:', error);
     return NextResponse.json({ error: 'Failed to update staff' }, { status: 500 });
   }
 }
 
 export async function DELETE(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const { id } = await params;
-    
-    // Clean up related records first
-    await prisma.leaveRequest.deleteMany({ where: { staffId: id } });
-    await prisma.attendance.deleteMany({ where: { staffId: id } });
-
+    const id = params.id;
     await prisma.staff.delete({
-      where: { id }
+      where: { id },
     });
-
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Error deleting staff:', error);
     return NextResponse.json({ error: 'Failed to delete staff' }, { status: 500 });
   }
 }

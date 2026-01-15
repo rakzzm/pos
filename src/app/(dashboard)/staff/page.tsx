@@ -4,12 +4,17 @@ import React, { useState, useEffect } from 'react';
 import { UserCheck, Plus, Search, Edit, Trash2, Mail, Phone, Calendar, DollarSign } from 'lucide-react';
 import { useStaffStore } from '../../../stores/staffStore';
 import { Modal } from '../../../components/Modal';
+import { AddEditStaffModal } from '../../../components/AddEditStaffModal';
+import { PayrollModal } from '../../../components/PayrollModal';
 
 export default function StaffManagementPage() {
   const { staff, loading, fetchStaff } = useStaffStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [roleFilter, setRoleFilter] = useState('all');
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isPayrollModalOpen, setIsPayrollModalOpen] = useState(false);
+  const [editingStaffId, setEditingStaffId] = useState<string | undefined>(undefined);
+  const { deleteStaff } = useStaffStore();
 
   useEffect(() => {
     fetchStaff();
@@ -108,6 +113,13 @@ export default function StaffManagementPage() {
             />
           </div>
           <div className="flex gap-4">
+             <button
+              onClick={() => setIsPayrollModalOpen(true)}
+              className="bg-green-600 text-white px-6 py-3 rounded-xl flex items-center gap-2 hover:bg-green-700 transition-all shadow-lg"
+            >
+              <DollarSign className="h-5 w-5" />
+              Payroll
+            </button>
             <select
               value={roleFilter}
               onChange={(e) => setRoleFilter(e.target.value)}
@@ -120,7 +132,10 @@ export default function StaffManagementPage() {
               <option value="chef">Chef</option>
             </select>
             <button
-              onClick={() => setIsAddModalOpen(true)}
+              onClick={() => {
+                  setEditingStaffId(undefined); // Ensure add mode
+                  setIsAddModalOpen(true);
+              }}
               className="bg-gradient-to-r from-pink-600 to-rose-600 text-white px-6 py-3 rounded-xl flex items-center gap-2 hover:scale-105 transition-all shadow-lg"
             >
               <Plus className="h-5 w-5" />
@@ -198,10 +213,27 @@ export default function StaffManagementPage() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex gap-2">
-                        <button className="text-blue-600 hover:text-blue-700 p-2 hover:bg-blue-50 rounded-lg transition-colors">
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex gap-2">
+                        <button 
+                            onClick={() => {
+                                setEditingStaffId(member.id);
+                                setIsAddModalOpen(true);
+                            }}
+                            className="text-blue-600 hover:text-blue-700 p-2 hover:bg-blue-50 rounded-lg transition-colors"
+                        >
                           <Edit className="h-4 w-4" />
                         </button>
-                        <button className="text-red-600 hover:text-red-700 p-2 hover:bg-red-50 rounded-lg transition-colors">
+                        <button 
+                            onClick={async () => {
+                                if(confirm('Are you sure you want to delete this staff member?')) {
+                                    await deleteStaff(member.id);
+                                }
+                            }}
+                            className="text-red-600 hover:text-red-700 p-2 hover:bg-red-50 rounded-lg transition-colors"
+                        >
                           <Trash2 className="h-4 w-4" />
                         </button>
                       </div>
@@ -214,18 +246,16 @@ export default function StaffManagementPage() {
         </div>
       )}
 
-      {/* Add Staff Modal */}
-      <Modal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} title="Add New Staff" size="large">
-        <div className="space-y-4">
-          <p className="text-gray-600">Staff creation form coming soon...</p>
-          <button
-            onClick={() => setIsAddModalOpen(false)}
-            className="w-full bg-gradient-to-r from-pink-600 to-rose-600 text-white py-3 rounded-xl font-semibold"
-          >
-            Close
-          </button>
-        </div>
-      </Modal>
+      <AddEditStaffModal 
+        isOpen={isAddModalOpen} 
+        onClose={() => setIsAddModalOpen(false)}
+        staffId={editingStaffId}
+      />
+      
+      <PayrollModal 
+        isOpen={isPayrollModalOpen}
+        onClose={() => setIsPayrollModalOpen(false)}
+      />
     </div>
   );
 }

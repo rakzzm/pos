@@ -1,15 +1,18 @@
-
 import { NextResponse } from 'next/server';
-import { prisma } from '../../../lib/prisma';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 export async function GET() {
   try {
     const staff = await prisma.staff.findMany({
       include: {
         leaveRequests: true,
-        attendanceRecords: true
+        payrollRecords: true
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
     return NextResponse.json(staff);
   } catch (error) {
@@ -19,29 +22,33 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
+    const data = await request.json();
+    
+    // Auto-generate employee ID
+    const count = await prisma.staff.count();
+    const employeeId = `EMP${String(count + 1).padStart(3, '0')}`;
+    
     const staff = await prisma.staff.create({
       data: {
-        employeeId: body.employeeId || `EMP${Math.floor(Math.random() * 10000)}`,
-        name: body.name,
-        email: body.email,
-        phone: body.phone,
-        position: body.position,
-        department: body.department,
-        hireDate: body.hireDate ? new Date(body.hireDate) : new Date(),
-        salary: parseFloat(body.salary),
-        status: body.status || 'active',
-        leaveBalanceAnnual: body.leaveBalance?.annual || 14,
-        leaveBalanceSick: body.leaveBalance?.sick || 14,
-        leaveBalancePersonal: body.leaveBalance?.personal || 7,
-        performanceRating: body.performanceRating || 0,
-        lastReview: body.lastReview ? new Date(body.lastReview) : null
-      }
+        employeeId,
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        position: data.position,
+        department: data.department || 'General',
+        hireDate: new Date(data.hireDate),
+        salary: parseFloat(data.salary),
+        status: data.status || 'active',
+        leaveBalanceAnnual: 14,
+        leaveBalanceSick: 14,
+        leaveBalancePersonal: 7,
+        performanceRating: 0,
+        lastReview: undefined
+      },
     });
-
     return NextResponse.json(staff);
   } catch (error) {
-    console.error('Error creating staff:', error);
+    console.error(error);
     return NextResponse.json({ error: 'Failed to create staff' }, { status: 500 });
   }
 }
