@@ -2,7 +2,7 @@
 
 A comprehensive, modern Point of Sale system built with React, TypeScript, and Supabase.
 
-![Architecture](/.gemini/antigravity/brain/7372d44d-1523-4359-86df-90b7ed030f6f/pos_architecture_1767591625186.png)
+
 
 ---
 
@@ -89,7 +89,7 @@ POS/
 
 1. **Clone the repository**
 ```bash
-cd /Users/rakesh/Documents/Products/POS
+cd /Users
 ```
 
 2. **Install dependencies**
@@ -119,21 +119,17 @@ http://localhost:5173
 ## 🔑 Demo Credentials
 
 ### Admin Access
-- Email: `rakesh@teleaon.ai`
-- Password: `admin12345`
+
 
 OR
 
-- Email: `sandeep@teleaon.ai`
-- Password: `admin12345`
+
 
 ### Manager Access
-- Email: `manager@example.com`
-- Password: `manager123`
+
 
 ### User Access
-- Email: `user@example.com`
-- Password: `user123`
+`
 
 ---
 
@@ -369,9 +365,7 @@ See `pos_architecture.png` for visual system architecture.
 
 ## 👥 Team
 
-**Developed by:** Teleaon.AI  
-**Contact:** rakesh@teleaon.ai, sandeep@teleaon.ai  
-**Last Updated:** January 5, 2026
+
 
 ---
 
