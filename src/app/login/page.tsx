@@ -85,12 +85,14 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-sky-400 via-pink-100 to-sky-200">
       <div className="max-w-6xl w-full space-y-8">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-sky-900 mb-2">
-            Teleaon.AI
-          </h1>
-          <h2 className="text-2xl font-semibold text-sky-800">
+          <div className="flex justify-center mb-8">
+            <div className="w-20 h-20 bg-gradient-to-tr from-sky-400 to-blue-600 rounded-2xl flex items-center justify-center shadow-xl transform rotate-3 hover:rotate-6 transition-transform duration-300">
+              <span className="text-4xl font-bold text-white">AC</span>
+            </div>
+          </div>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-sky-600 to-blue-800 bg-clip-text text-transparent mb-2">
             Adavakkad Collections
-          </h2>
+          </h1>
           <p className="mt-2 text-sm text-sky-700">
             Sign in to access your dashboard
           </p>
