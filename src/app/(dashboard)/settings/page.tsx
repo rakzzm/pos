@@ -35,7 +35,7 @@ export default function SettingsPage() {
     businessName: 'Adavakkad Collections',
     businessAddress: '123 Main Street, City',
     businessPhone: '+91 1234567890',
-    businessEmail: 'info@restaurant.com',
+    businessEmail: 'info@adavakkad.com',
     currency: 'INR',
     taxRate: '18',
     timezone: 'Asia/Kolkata',

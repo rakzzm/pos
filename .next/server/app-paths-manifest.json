@@ -1,8 +1,8 @@
 {
-  "/api/members/route": "app/api/members/route.js",
-  "/(dashboard)/top-sales/page": "app/(dashboard)/top-sales/page.js",
-  "/(dashboard)/page": "app/(dashboard)/page.js",
-  "/(dashboard)/members/page": "app/(dashboard)/members/page.js",
+  "/icon.png/route": "app/icon.png/route.js",
+  "/login/page": "app/login/page.js",
   "/(dashboard)/orders/page": "app/(dashboard)/orders/page.js",
-  "/(dashboard)/reports/page": "app/(dashboard)/reports/page.js"
+  "/(dashboard)/top-sales/page": "app/(dashboard)/top-sales/page.js",
+  "/(dashboard)/members/page": "app/(dashboard)/members/page.js",
+  "/(dashboard)/page": "app/(dashboard)/page.js"
 }

@@ -43,13 +43,13 @@ export default function QRCodesPage() {
     // Contact (vCard)
     contactName: 'Restaurant Manager',
     contactPhone: '+91 1234567890',
-    contactEmail: 'manager@restaurant.com',
+    contactEmail: 'manager@adavakkad.com',
     contactAddress: '123 Main St, City',
     // SMS
     smsNumber: '+91 1234567890',
     smsMessage: 'Hello from our restaurant!',
     // Email
-    emailTo: 'info@restaurant.com',
+    emailTo: 'info@adavakkad.com',
     emailSubject: 'Inquiry',
     emailBody: 'Hello, I would like to...',
     // Menu

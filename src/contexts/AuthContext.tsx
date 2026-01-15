@@ -29,7 +29,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const adminUsers = [
     {
       id: '1',
-      email: 'rakesh@teleaon.ai',
+      email: 'rakesh@adavakkad.com',
       password: 'admin12345',
       name: 'Rakesh',
       role: 'admin' as UserRole,
@@ -37,7 +37,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     },
     {
       id: '2',
-      email: 'sandeep@teleaon.ai',
+      email: 'sandeep@adavakkad.com',
       password: 'admin12345',
       name: 'Sandeep',
       role: 'admin' as UserRole,
@@ -46,7 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Keep other mock users for testing
     {
       id: '3',
-      email: 'manager@example.com',
+      email: 'manager@adavakkad.com',
       password: 'manager123',
       name: 'Manager User',
       role: 'manager' as UserRole,
@@ -54,7 +54,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     },
     {
       id: '4',
-      email: 'user@example.com',
+      email: 'user@adavakkad.com',
       password: 'user123',
       name: 'Regular User',
       role: 'user' as UserRole,

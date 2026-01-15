@@ -44,7 +44,7 @@ export default function LoginPage() {
   const demoCredentials = [
     {
       role: 'Admin',
-      email: 'rakesh@teleaon.ai',
+      email: 'rakesh@adavakkad.com',
       password: 'admin12345',
       description: 'Full system access',
       icon: Shield,
@@ -52,7 +52,7 @@ export default function LoginPage() {
     },
     {
       role: 'Admin',
-      email: 'sandeep@teleaon.ai',
+      email: 'sandeep@adavakkad.com',
       password: 'admin12345',
       description: 'Full system access',
       icon: Shield,
@@ -60,7 +60,7 @@ export default function LoginPage() {
     },
     {
       role: 'Manager',
-      email: 'manager@example.com',
+      email: 'manager@adavakkad.com',
       password: 'manager123',
       description: 'Management access',
       icon: Settings,
@@ -68,7 +68,7 @@ export default function LoginPage() {
     },
     {
       role: 'User',
-      email: 'user@example.com',
+      email: 'user@adavakkad.com',
       password: 'user123',
       description: 'Basic POS access',
       icon: User,
