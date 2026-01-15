@@ -387,7 +387,7 @@ Proprietary - All rights reserved
 
 ## 📞 Support
 
-For support, email rakesh@teleaon.ai or create an issue in the repository.
+
 
 ---
 
