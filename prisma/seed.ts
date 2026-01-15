@@ -3,274 +3,262 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('Seeding database...');
+  console.log('Start seeding ...');
 
-  // Clean up existing data (optional, be careful in production)
-  await prisma.orderItem.deleteMany();
-  await prisma.order.deleteMany();
-  await prisma.invoiceItem.deleteMany();
-  await prisma.invoice.deleteMany();
-  await prisma.attendance.deleteMany();
-  await prisma.leaveRequest.deleteMany();
-  await prisma.staff.deleteMany();
-  await prisma.member.deleteMany();
-  await prisma.product.deleteMany();
-  await prisma.user.deleteMany();
-
-  // 1. Seed Products
-  console.log('Seeding Products...');
-  const pizzaMargherita = await prisma.product.create({
-    data: {
-      name: 'Margherita Pizza',
-      description: 'Fresh tomatoes, mozzarella, basil, and olive oil',
-      price: 14.99,
-      category: 'Pizza',
-      stock: 50,
-      imageUrl: 'https://images.unsplash.com/photo-1604068549290-dea0e4a305ca',
-      tags: 'vegetarian,classic,best-seller', // SQLite string tag
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-  });
-
-  const pepperoniPizza = await prisma.product.create({
-    data: {
-      name: 'Pepperoni Pizza',
-      description: 'Classic pepperoni with mozzarella and tomato sauce',
-      price: 16.99,
-      category: 'Pizza',
-      stock: 45,
-      imageUrl: 'https://images.unsplash.com/photo-1628840042765-356cda07504e',
-      tags: 'spicy,meat,popular',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-  });
+  // Cleanup existing data (optional, but good for idempotent testing if we want clear state, 
+  // but user might have real data. Let's be additive or safe.
+  // Given the request "add sample data", I will just upsert or create if not exists.)
+  // Actually, for clear demo, I'll delete these specific sample IDs if they exist and recreate them.
   
-  const coke = await prisma.product.create({
-    data: {
-      name: 'Coca Cola',
-      description: 'Chilled can of Coke',
-      price: 2.99,
-      category: 'Beverage',
-      stock: 100,
-      imageUrl: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97',
-      tags: 'drink,cold',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-  });
-
-  // 2. Seed Users
-  console.log('Seeding Users...');
-  const users = [
+  const staffMembers = [
     {
-      email: 'rakesh@teleaon.ai',
-      name: 'Rakesh',
-      password: 'admin12345',
-      role: 'admin',
+      id: 'staff-sample-1',
+      employeeId: 'EMP001',
+      name: 'Alice Johnson',
+      email: 'alice@adavakkad.com',
+      phone: '555-0101',
+      position: 'Manager',
+      department: 'Management',
+      hireDate: new Date('2023-01-15'),
+      salary: 5000,
       status: 'active',
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      leaveBalance: { annual: 20, sick: 10, personal: 5 },
+      performance: { rating: 4.8, lastReview: '2023-12-01' }
     },
     {
-      email: 'sandeep@teleaon.ai',
-      name: 'Sandeep',
-      password: 'admin12345',
-      role: 'admin',
+      id: 'staff-sample-2',
+      employeeId: 'EMP002',
+      name: 'Bob Smith',
+      email: 'bob@adavakkad.com',
+      phone: '555-0102',
+      position: 'Cashier',
+      department: 'Sales',
+      hireDate: new Date('2023-03-20'),
+      salary: 3000,
       status: 'active',
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      leaveBalance: { annual: 15, sick: 10, personal: 5 },
+      performance: { rating: 4.2, lastReview: '2023-11-15' }
+    },
+    {
+      id: 'staff-sample-3',
+      employeeId: 'EMP003',
+      name: 'Charlie Brown',
+      email: 'charlie@adavakkad.com',
+      phone: '555-0103',
+      position: 'Chef',
+      department: 'Kitchen',
+      hireDate: new Date('2023-06-10'),
+      salary: 4000,
+      status: 'active', // One inactive/on-leave? Let's keep active for clock-in demo
+      leaveBalance: { annual: 18, sick: 12, personal: 5 },
+      performance: { rating: 4.5, lastReview: '2023-10-30' }
     }
   ];
 
-  for (const user of users) {
-    await prisma.user.upsert({
-      where: { email: user.email },
-      update: {},
-      create: user,
+  const createdStaff = [];
+
+  for (const staff of staffMembers) {
+    const { leaveBalance, performance, ...data } = staff;
+    
+    // Check if exists first to get ID if we can't force ID on update
+    // But upsert returns the record!
+    
+    const updateData = { // Define update logic to ensure sample data overwrites old data
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        position: data.position,
+        department: data.department,
+        hireDate: data.hireDate,
+        salary: data.salary,
+        status: data.status as string,
+        leaveBalanceAnnual: leaveBalance.annual,
+        leaveBalanceSick: leaveBalance.sick,
+        leaveBalancePersonal: leaveBalance.personal,
+        performanceRating: performance.rating,
+        lastReview: performance.lastReview ? new Date(performance.lastReview) : undefined
+    };
+
+    const record = await prisma.staff.upsert({
+      where: { employeeId: staff.employeeId },
+      update: updateData, // Actually update!
+      create: {
+        ...data,
+        ...updateData
+      },
     });
+    createdStaff.push(record);
   }
+  
+  // Helper to find ID by Employee ID
+  const getStaffId = (empId: string) => createdStaff.find(s => s.employeeId === empId)?.id;
 
-  // 3. Seed Members
-  console.log('Seeding Members...');
-  const memberJohn = await prisma.member.create({
-    data: {
-      memberId: 'BB001',
-      name: 'John Smith',
-      email: 'john@example.com',
-      phone: '+60123456789',
-      joinDate: new Date('2024-01-15'),
-      tier: 'gold',
-      points: 1500,
-      totalSpent: 3500.50,
-      status: 'active',
-      visits: 12,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    }
-  });
+  // Attendance Records
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
 
-  // 4. Seed Staff
-  console.log('Seeding Staff...');
-  const staffSarah = await prisma.staff.create({
-    data: {
-      employeeId: 'EMP001',
-      name: 'Sarah Connor',
-      email: 'sarah@advakkad.com',
-      phone: '+60198765432',
-      position: 'Manager',
-      department: 'Operations',
-      hireDate: new Date('2023-05-01'),
-      salary: 5000.00,
-      status: 'active',
-      leaveBalanceAnnual: 14,
-      leaveBalanceSick: 10,
-      leaveBalancePersonal: 5,
-      performanceRating: 4.8,
-      lastReview: new Date('2024-06-01'),
-    }
-  });
-
-  const staffMike = await prisma.staff.create({
-    data: {
-      employeeId: 'EMP002',
-      name: 'Mike Ross',
-      email: 'mike@advakkad.com',
-      phone: '+601122334455',
-      position: 'Server',
-      department: 'Service',
-      hireDate: new Date('2024-02-15'),
-      salary: 2500.00,
-      status: 'active',
-      leaveBalanceAnnual: 10,
-      leaveBalanceSick: 12,
-      leaveBalancePersonal: 3,
-      performanceRating: 4.2,
-    }
-  });
-
-  // 5. Seed Attendance
-  console.log('Seeding Attendance...');
-  await prisma.attendance.create({
-    data: {
-      staffId: staffSarah.id,
-      date: new Date(), // Today
+  const attendanceData = [
+    // Today
+    {
+      employeeId: 'EMP001', // Use employeeId to lookup
+      date: today,
       punchIn: '09:00',
       punchOut: '17:00',
-      totalHours: 8.0,
-      status: 'present',
-      location: 'Main Branch',
-      notes: 'On time',
+      totalHours: 8,
+      status: 'present'
+    },
+    {
+        employeeId: 'EMP002',
+        date: today,
+        punchIn: '10:00',
+        punchOut: null,
+        totalHours: 0,
+        status: 'present'
+    },
+    // Yesterday
+    {
+        employeeId: 'EMP001',
+        date: yesterday,
+        punchIn: '09:00',
+        punchOut: '17:30',
+        totalHours: 8.5,
+        status: 'present'
+    },
+    {
+        employeeId: 'EMP002',
+        date: yesterday,
+        punchIn: '10:00',
+        punchOut: '18:00',
+        totalHours: 8,
+        status: 'present'
+    },
+    {
+        employeeId: 'EMP003',
+        date: yesterday,
+        punchIn: '08:00',
+        punchOut: '16:00',
+        totalHours: 8,
+        status: 'present'
     }
-  });
-  
-  await prisma.attendance.create({
-    data: {
-      staffId: staffMike.id,
-      date: new Date(), // Today
-      punchIn: '10:00',
-      status: 'present', // Currently working
-      location: 'Main Branch',
-      totalHours: 0,
-    }
-  });
+  ];
 
-  // 6. Seed Orders
-  console.log('Seeding Orders...');
-  await prisma.order.create({
-    data: {
-      orderNumber: 'ORD-2024-001',
-      customerName: 'Walk-in Customer',
-      total: 34.97,
-      subtotal: 31.97,
-      discount: 0,
-      serviceTax: 3.00,
-      status: 'completed',
-      paymentMethod: 'cash',
-      date: new Date(),
-      items: {
-        create: [
-          {
-            productId: pizzaMargherita.id,
-            name: pizzaMargherita.name,
-            price: pizzaMargherita.price,
-            quantity: 1,
-          },
-          {
-            productId: pepperoniPizza.id,
-            name: pepperoniPizza.name,
-            price: pepperoniPizza.price,
-            quantity: 1,
+  console.log('Seeding attendance...');
+  for (const att of attendanceData) {
+      const realStaffId = getStaffId(att.employeeId);
+      if (!realStaffId) continue;
+
+      const exists = await prisma.attendance.findFirst({
+          where: {
+              staffId: realStaffId,
+              date: {
+                  gte: new Date(att.date.setHours(0,0,0,0)),
+                  lt: new Date(att.date.setHours(23,59,59,999))
+              }
           }
-        ]
+      });
+      
+      if (!exists) {
+          await prisma.attendance.create({
+              data: {
+                  staffId: realStaffId,
+                  date: att.date,
+                  punchIn: att.punchIn,
+                  punchOut: att.punchOut,
+                  totalHours: att.totalHours,
+                  status: att.status
+              }
+          });
       }
-    }
-  });
+  }
 
-  await prisma.order.create({
-    data: {
-      orderNumber: 'ORD-2024-002',
-      customerName: memberJohn.name,
-      memberId: memberJohn.id,
-      total: 17.98,
-      subtotal: 17.98,
-      discount: 0,
-      serviceTax: 0,
-      status: 'pending',
-      paymentMethod: 'credit_card',
-      date: new Date(),
-      items: {
-        create: [
-          {
-            productId: pizzaMargherita.id,
-            name: pizzaMargherita.name,
-            price: pizzaMargherita.price,
-            quantity: 1,
-          },
-          {
-            productId: coke.id,
-            name: coke.name,
-            price: coke.price,
-            quantity: 1,
-          }
-        ]
+  // Indian Menu Items
+  const indianMenu = [
+    {
+      name: 'Butter Chicken',
+      description: 'Tender chicken cooked in a rich tomato and butter gravy',
+      price: 18.90,
+      category: 'Indian Special',
+      stock: 50,
+      imageUrl: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&q=80&w=1000',
+      tags: 'curry,chicken,popular',
+      isFeatured: true
+    },
+    {
+      name: 'Chicken Biryani',
+      description: 'Aromatic basmati rice cooked with spiced chicken and herbs',
+      price: 16.50,
+      category: 'Indian Special',
+      stock: 40,
+      imageUrl: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&q=80&w=1000',
+      tags: 'rice,spicy,popular',
+      isFeatured: true
+    },
+    {
+      name: 'Paneer Tikka Masala',
+      description: 'Grilled cottage cheese cubes in a spicy curry sauce',
+      price: 15.90,
+      category: 'Indian Special',
+      stock: 30,
+      imageUrl: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&q=80&w=1000',
+      tags: 'vegetarian,curry,spicy',
+      isFeatured: false
+    },
+    {
+      name: 'Garlic Naan',
+      description: 'Oven-baked flatbread topped with garlic and butter',
+      price: 4.50,
+      category: 'Indian Special',
+      stock: 100,
+      imageUrl: 'https://images.unsplash.com/photo-1626074353765-517a681e40be?auto=format&fit=crop&q=80&w=1000',
+      tags: 'bread,side',
+      isFeatured: false
+    },
+    {
+      name: 'South Indian Fish Curry',
+      description: 'Spicy and tangy fish curry with coconut milk',
+      price: 19.90,
+      category: 'Indian Special',
+      stock: 30,
+      imageUrl: 'https://images.unsplash.com/photo-1626509653294-46d9263a2333?auto=format&fit=crop&q=80&w=1000',
+      tags: 'seafood,spicy,curry',
+      isFeatured: true
+    },
+    {
+        name: 'Samosa Platter',
+        description: 'Crispy pastry filled with spiced potatoes and peas (3 pcs)',
+        price: 8.90,
+        category: 'Starters',
+        stock: 50,
+        imageUrl: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&q=80&w=1000',
+        tags: 'vegetarian,snack',
+        isFeatured: false
+    }
+  ];
+
+  console.log('Seeding menu...');
+  for (const item of indianMenu) {
+      // Upsert products to avoid duplicates
+      // We don't have a unique field for products other than ID, but for seeding we can check by name
+      const exists = await prisma.product.findFirst({ where: { name: item.name } });
+      if (!exists) {
+          await prisma.product.create({
+              data: {
+                  ...item
+              }
+          });
       }
-    }
-  });
+  }
 
-  // 7. Seed Invoices
-  console.log('Seeding Invoices...');
-  await prisma.invoice.create({
-    data: {
-      invoiceNumber: 'INV-2025-001',
-      customerName: 'Corporate Client A',
-      grandTotal: 1500.00,
-      status: 'paid',
-      issueDate: new Date(),
-      dueDate: new Date(new Date().setDate(new Date().getDate() + 30)),
-      paymentMethod: 'bank_transfer',
-      items: {
-        create: [
-          {
-            description: 'Catering Service - Annual Dinner',
-            quantity: 1,
-            unitPrice: 1500.00,
-            total: 1500.00
-          }
-        ]
-      }
-    }
-  });
-
-  console.log('Seeding completed.');
+  console.log('Seeding finished.');
 }
 
 main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
+  .then(async () => {
     await prisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
   });

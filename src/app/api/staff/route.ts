@@ -7,8 +7,7 @@ export async function GET() {
   try {
     const staff = await prisma.staff.findMany({
       include: {
-        leaveRequests: true,
-        payrollRecords: true
+        leaveRequests: true
       },
       orderBy: {
         createdAt: 'desc',
@@ -16,6 +15,7 @@ export async function GET() {
     });
     return NextResponse.json(staff);
   } catch (error) {
+    console.error('Error fetching staff:', error);
     return NextResponse.json({ error: 'Failed to fetch staff' }, { status: 500 });
   }
 }

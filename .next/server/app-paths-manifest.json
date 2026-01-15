@@ -1,9 +1,11 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
   "/icon.png/route": "app/icon.png/route.js",
-  "/(dashboard)/settings/page": "app/(dashboard)/settings/page.js",
+  "/api/orders/route": "app/api/orders/route.js",
+  "/api/products/route": "app/api/products/route.js",
+  "/(dashboard)/attendance/page": "app/(dashboard)/attendance/page.js",
+  "/(dashboard)/members/page": "app/(dashboard)/members/page.js",
   "/(dashboard)/tables/page": "app/(dashboard)/tables/page.js",
-  "/(dashboard)/page": "app/(dashboard)/page.js",
-  "/(dashboard)/staff/page": "app/(dashboard)/staff/page.js",
-  "/(dashboard)/qr-codes/page": "app/(dashboard)/qr-codes/page.js"
+  "/(dashboard)/orders/page": "app/(dashboard)/orders/page.js",
+  "/(dashboard)/products/page": "app/(dashboard)/products/page.js",
+  "/(dashboard)/page": "app/(dashboard)/page.js"
 }
