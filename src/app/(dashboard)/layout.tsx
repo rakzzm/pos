@@ -204,9 +204,9 @@ export default function DashboardLayout({
           } fixed inset-y-0 left-0 z-50 w-64 bg-gradient-to-b from-slate-900/95 via-gray-900/95 to-slate-900/95 backdrop-blur-2xl shadow-2xl transform transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 border-r border-white/10`}>
 
           {/* Header */}
-          <div className="flex h-16 items-center justify-between px-4">
+          <div className="flex h-20 items-center justify-between px-4 pt-4 pb-2">
             <div className="flex items-center justify-center w-full">
-              <div className="relative w-48 h-16">
+              <div className="relative w-full h-12 bg-white rounded-lg shadow-lg p-1">
                 <img
                   src="/images/logo.png"
                   alt="Adavakkad Collections"
