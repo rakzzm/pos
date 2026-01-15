@@ -86,13 +86,14 @@ export default function LoginPage() {
       <div className="max-w-6xl w-full space-y-8">
         <div className="text-center">
           <div className="flex justify-center mb-8">
-            <div className="w-20 h-20 bg-gradient-to-tr from-sky-400 to-blue-600 rounded-2xl flex items-center justify-center shadow-xl transform rotate-3 hover:rotate-6 transition-transform duration-300">
-              <span className="text-4xl font-bold text-white">AC</span>
+            <div className="w-64 h-32 relative">
+              <img
+                src="/images/logo.png"
+                alt="Adavakkad Collections"
+                className="w-full h-full object-contain"
+              />
             </div>
           </div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-sky-600 to-blue-800 bg-clip-text text-transparent mb-2">
-            Adavakkad Collections
-          </h1>
           <p className="mt-2 text-sm text-sky-700">
             Sign in to access your dashboard
           </p>

@@ -29,7 +29,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const router = useRouter(); // eslint-disable-line @typescript-eslint/no-unused-vars
+  const router = useRouter();
   const { user, logout } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -205,11 +205,14 @@ export default function DashboardLayout({
 
           {/* Header */}
           <div className="flex h-16 items-center justify-between px-4">
-            <div className="flex items-center">
-              <div className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-lg mr-3 animate-pulse-slow"></div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-                Adavakkad Collections
-              </h1>
+            <div className="flex items-center justify-center w-full">
+              <div className="relative w-48 h-16">
+                <img
+                  src="/images/logo.png"
+                  alt="Adavakkad Collections"
+                  className="object-contain w-full h-full"
+                />
+              </div>
             </div>
             <button
               onClick={() => setSidebarOpen(false)}
@@ -277,7 +280,13 @@ export default function DashboardLayout({
             >
               <Menu className="h-6 w-6" />
             </button>
-            <h1 className="text-lg font-semibold text-gray-900">Adavakkad Collections</h1>
+            <div className="h-10">
+              <img
+                src="/images/logo.png"
+                alt="Adavakkad Collections"
+                className="h-full object-contain"
+              />
+            </div>
             <div className="w-6"></div>
           </div>
 
