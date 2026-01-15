@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { FileText, Download, Eye, Send, Plus, Search, CheckCircle, Clock, XCircle } from 'lucide-react';
+import { CreateInvoiceModal } from '../../../components/CreateInvoiceModal';
 import { useInvoiceStore } from '../../../stores/invoiceStore';
 import { Modal } from '../../../components/Modal';
 import jsPDF from 'jspdf';
@@ -13,6 +14,7 @@ export default function InvoicesPage() {
   const [statusFilter, setStatusFilter] = useState('all');
   const [selectedInvoice, setSelectedInvoice] = useState<any>(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   useEffect(() => {
     fetchInvoices();
@@ -230,7 +232,10 @@ export default function InvoicesPage() {
               <option value="overdue">Overdue</option>
               <option value="cancelled">Cancelled</option>
             </select>
-            <button className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl flex items-center gap-2 hover:scale-105 transition-all shadow-lg">
+            <button 
+              onClick={() => setIsCreateModalOpen(true)}
+              className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-3 rounded-xl flex items-center gap-2 hover:scale-105 transition-all shadow-lg"
+            >
               <Plus className="h-5 w-5" />
               New Invoice
             </button>
@@ -362,6 +367,12 @@ export default function InvoicesPage() {
           </div>
         )}
       </Modal>
+
+      {/* Create Modal */}
+      <CreateInvoiceModal 
+        isOpen={isCreateModalOpen} 
+        onClose={() => setIsCreateModalOpen(false)} 
+      />
     </div>
   );
 }
