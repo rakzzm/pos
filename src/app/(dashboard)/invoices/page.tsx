@@ -60,6 +60,7 @@ export default function InvoicesPage() {
     sent: invoices.filter((i) => i.status === 'sent').length,
     draft: invoices.filter((i) => i.status === 'draft').length,
     overdue: invoices.filter((i) => i.status === 'overdue').length,
+    totalRevenue: invoices
       .filter((i) => i.status === 'paid')
       .reduce((sum, i) => sum + (i.grandTotal || 0), 0),
   };
