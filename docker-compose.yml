@@ -10,24 +10,9 @@ services:
     ports:
       - "7004:3000"
     environment:
-      - DATABASE_URL=postgresql://postgres:password@postgres:5432/advakkad_pos
-    depends_on:
-      - postgres
-    networks:
-      - app_network
-
-  postgres:
-    image: postgres:15-alpine
-    container_name: advakkad_pos_db
-    restart: always
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: advakkad_pos
-    ports:
-      - "5432:5432"
+      - DATABASE_URL=file:/app/data/dev.db
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - sqlite_data:/app/data
     networks:
       - app_network
 
@@ -36,4 +21,4 @@ networks:
     driver: bridge
 
 volumes:
-  postgres_data:
+  sqlite_data:
