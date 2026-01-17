@@ -40,7 +40,10 @@ export const useProductStore = create<ProductStore>((set) => ({
     set({ loading: true, error: null });
     try {
       const response = await fetch('/api/products');
-      if (!response.ok) throw new Error('Failed to fetch products');
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.details || errorData.error || 'Failed to fetch products');
+      }
       const data = await response.json();
       
       // Map DB fields to FE Expected fields if needed, relying on loose typing for now
