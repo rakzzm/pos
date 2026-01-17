@@ -5,6 +5,61 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('Start seeding ...');
 
+  // Seed Users
+  const users = [
+    {
+      email: 'rakesh@adavakkad.com',
+      password: 'admin12345',
+      name: 'Rakesh',
+      role: 'admin',
+      locationId: 'loc1',
+      status: 'active'
+    },
+    {
+      email: 'sandeep@adavakkad.com',
+      password: 'admin12345',
+      name: 'Sandeep',
+      role: 'admin',
+      locationId: 'loc1',
+      status: 'active'
+    },
+    {
+      email: 'manager@adavakkad.com',
+      password: 'manager123',
+      name: 'Manager User',
+      role: 'manager',
+      locationId: 'loc1',
+      status: 'active'
+    },
+    {
+      email: 'user@adavakkad.com',
+      password: 'user123',
+      name: 'Regular User',
+      role: 'user',
+      locationId: 'loc1',
+      status: 'active'
+    }
+  ];
+
+  console.log('Seeding users...');
+  for (const user of users) {
+    const exists = await prisma.user.findUnique({
+      where: { email: user.email }
+    });
+
+    if (!exists) {
+      await prisma.user.create({
+        data: user
+      });
+    } else {
+      // Update existing user to ensure password match
+      await prisma.user.update({
+        where: { email: user.email },
+        data: user
+      });
+    }
+  }
+
   // Cleanup existing data (optional, but good for idempotent testing if we want clear state, 
   // but user might have real data. Let's be additive or safe.
   // Given the request "add sample data", I will just upsert or create if not exists.)

@@ -25,55 +25,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
 
-  // Local admin accounts
-  const adminUsers = [
-    {
-      id: '1',
-      email: 'rakesh@adavakkad.com',
-      password: 'admin12345',
-      name: 'Rakesh',
-      role: 'admin' as UserRole,
-      locationId: 'loc1'
-    },
-    {
-      id: '2',
-      email: 'sandeep@adavakkad.com',
-      password: 'admin12345',
-      name: 'Sandeep',
-      role: 'admin' as UserRole,
-      locationId: 'loc1'
-    },
-    // Keep other mock users for testing
-    {
-      id: '3',
-      email: 'manager@adavakkad.com',
-      password: 'manager123',
-      name: 'Manager User',
-      role: 'manager' as UserRole,
-      locationId: 'loc1'
-    },
-    {
-      id: '4',
-      email: 'user@adavakkad.com',
-      password: 'user123',
-      name: 'Regular User',
-      role: 'user' as UserRole,
-      locationId: 'loc1'
-    }
-  ];
-
   const login = async (email: string, password: string) => {
-    const user = adminUsers.find(u => u.email === email && u.password === password);
-    
-    if (user) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password: _password, ...userData } = user;
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Login failed');
+      }
+
+      const userData = await response.json();
       setUser(userData);
-      // Store user data in localStorage for persistence
       localStorage.setItem('user', JSON.stringify(userData));
       router.push('/');
-    } else {
-      throw new Error('Invalid credentials');
+    } catch (error) {
+      console.error('Login error:', error);
+      throw error;
     }
   };
 
