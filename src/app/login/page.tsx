@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import { Eye, EyeOff, LogIn, AlertCircle, User, Shield, Settings } from 'lucide-react';
+import { Eye, EyeOff, LogIn, AlertCircle } from 'lucide-react';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -47,15 +47,9 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-sky-400 via-pink-100 to-sky-200">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
-          <div className="flex justify-center mb-8">
-            <div className="w-64 h-32 relative">
-              <img
-                src="/images/logo.png"
-                alt="Adavakkad Collections"
-                className="w-full h-full object-contain"
-              />
-            </div>
-          </div>
+          <p className="mt-2 text-2xl font-bold text-sky-800">
+            Adavakkad Collections
+          </p>
           <p className="mt-2 text-sm text-sky-700">
             Sign in to access your dashboard
           </p>
