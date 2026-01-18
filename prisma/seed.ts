@@ -38,6 +38,14 @@ async function main() {
       role: 'user',
       locationId: 'loc1',
       status: 'active'
+    },
+    {
+      email: 'abhilash@advakkad.com',
+      password: 'admin123456',
+      name: 'Abhilash',
+      role: 'admin',
+      locationId: 'loc1',
+      status: 'active'
     }
   ];
 
@@ -228,71 +236,203 @@ async function main() {
   }
 
   // Indian Menu Items
-  const indianMenu = [
+  // Expanded Menu Items by Cuisine
+  const southIndian = [
+    {
+      name: 'Masala Dosa',
+      description: 'Crispy rice crepe filled with spiced potato masala',
+      price: 120.00,
+      category: 'South Indian',
+      stock: 100,
+      imageUrl: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&q=80&w=1000',
+      tags: 'vegetarian,breakfast,popular',
+      isFeatured: true
+    },
+    {
+      name: 'Idli Vada Set',
+      description: 'Steamed rice cakes and savory lentil donuts served with chutney and sambar',
+      price: 80.00,
+      category: 'South Indian',
+      stock: 150,
+      imageUrl: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&q=80&w=1000', // Placeholder
+      tags: 'vegetarian,breakfast',
+      isFeatured: false
+    },
+    {
+      name: 'Uttapam',
+      description: 'Thick savory pancake topped with onions and tomatoes',
+      price: 100.00,
+      category: 'South Indian',
+      stock: 80,
+      imageUrl: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&q=80&w=1000', // Placeholder
+      tags: 'vegetarian,breakfast',
+      isFeatured: false
+    }
+  ];
+
+  const northIndian = [
     {
       name: 'Butter Chicken',
       description: 'Tender chicken cooked in a rich tomato and butter gravy',
-      price: 18.90,
-      category: 'Indian Special',
+      price: 320.00,
+      category: 'North Indian',
       stock: 50,
       imageUrl: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&q=80&w=1000',
       tags: 'curry,chicken,popular',
       isFeatured: true
     },
     {
-      name: 'Chicken Biryani',
-      description: 'Aromatic basmati rice cooked with spiced chicken and herbs',
-      price: 16.50,
-      category: 'Indian Special',
-      stock: 40,
-      imageUrl: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&q=80&w=1000',
-      tags: 'rice,spicy,popular',
+      name: 'Dal Makhani',
+      description: 'Black lentils cooked with butter and cream',
+      price: 240.00,
+      category: 'North Indian',
+      stock: 60,
+      imageUrl: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&q=80&w=1000',
+      tags: 'vegetarian,curry,popular',
       isFeatured: true
-    },
-    {
-      name: 'Paneer Tikka Masala',
-      description: 'Grilled cottage cheese cubes in a spicy curry sauce',
-      price: 15.90,
-      category: 'Indian Special',
-      stock: 30,
-      imageUrl: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&q=80&w=1000',
-      tags: 'vegetarian,curry,spicy',
-      isFeatured: false
     },
     {
       name: 'Garlic Naan',
       description: 'Oven-baked flatbread topped with garlic and butter',
-      price: 4.50,
-      category: 'Indian Special',
-      stock: 100,
+      price: 45.00,
+      category: 'North Indian',
+      stock: 200,
       imageUrl: 'https://images.unsplash.com/photo-1626074353765-517a681e40be?auto=format&fit=crop&q=80&w=1000',
       tags: 'bread,side',
       isFeatured: false
     },
     {
-      name: 'South Indian Fish Curry',
-      description: 'Spicy and tangy fish curry with coconut milk',
-      price: 19.90,
-      category: 'Indian Special',
-      stock: 30,
+      name: 'Paneer Butter Masala',
+      description: 'Cottage cheese cubes in a creamy tomato gravy',
+      price: 280.00,
+      category: 'North Indian',
+      stock: 45,
+      imageUrl: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&q=80&w=1000',
+      tags: 'vegetarian,paneer,curry',
+      isFeatured: false
+    }
+  ];
+
+  const chinese = [
+    {
+      name: 'Chicken Fried Rice',
+      description: 'Stir-fried rice with chicken, eggs, and vegetables',
+      price: 220.00,
+      category: 'Chinese',
+      stock: 75,
+      imageUrl: 'https://images.unsplash.com/photo-1603133872878-684f571d70f2?auto=format&fit=crop&q=80&w=1000',
+      tags: 'rice,chicken',
+      isFeatured: false
+    },
+    {
+      name: 'Gobi Manchurian',
+      description: 'Crispy cauliflower florets tossed in spicy manchurian sauce',
+      price: 180.00,
+      category: 'Chinese',
+      stock: 60,
+      imageUrl: 'https://images.unsplash.com/photo-1625398407796-82650a8c96b2?auto=format&fit=crop&q=80&w=1000',
+      tags: 'vegetarian,starter,spicy',
+      isFeatured: true
+    },
+    {
+      name: 'Hakka Noodles',
+      description: 'Stir-fried noodles with crunchy vegetables',
+      price: 200.00,
+      category: 'Chinese',
+      stock: 80,
+      imageUrl: 'https://images.unsplash.com/photo-1585032226651-759b368d72b7?auto=format&fit=crop&q=80&w=1000',
+      tags: 'vegetarian,noodles',
+      isFeatured: false
+    }
+  ];
+
+  const kerala = [
+    {
+      name: 'Kerala Fish Curry',
+      description: 'Spicy fish curry cooked with cocum and coconut milk',
+      price: 350.00,
+      category: 'Kerala Special',
+      stock: 40,
       imageUrl: 'https://images.unsplash.com/photo-1626509653294-46d9263a2333?auto=format&fit=crop&q=80&w=1000',
       tags: 'seafood,spicy,curry',
       isFeatured: true
     },
     {
-        name: 'Samosa Platter',
-        description: 'Crispy pastry filled with spiced potatoes and peas (3 pcs)',
-        price: 8.90,
-        category: 'Starters',
-        stock: 50,
-        imageUrl: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&q=80&w=1000',
-        tags: 'vegetarian,snack',
-        isFeatured: false
+      name: 'Appam with Stew',
+      description: 'Soft rice pancakes served with vegetable stew',
+      price: 150.00,
+      category: 'Kerala Special',
+      stock: 55,
+      imageUrl: 'https://images.unsplash.com/photo-1626074353765-517a681e40be?auto=format&fit=crop&q=80&w=1000', // Placeholder
+      tags: 'vegetarian,breakfast',
+      isFeatured: true
+    },
+    {
+      name: 'Beef Fry',
+      description: 'Spicy stir-fried beef with coconut slices and curry leaves',
+      price: 280.00,
+      category: 'Kerala Special',
+      stock: 45,
+      imageUrl: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&q=80&w=1000', // Placeholder
+      tags: 'meat,spicy,popular',
+      isFeatured: false
+    },
+    {
+      name: 'Malabar Parotta',
+      description: 'Layered flaky flatbread',
+      price: 25.00,
+      category: 'Kerala Special',
+      stock: 300,
+      imageUrl: 'https://images.unsplash.com/photo-1626074353765-517a681e40be?auto=format&fit=crop&q=80&w=1000', // Placeholder
+      tags: 'bread,side',
+      isFeatured: false
     }
   ];
 
+  const tamilNadu = [
+    {
+      name: 'Chicken Chettinad',
+      description: 'Spicy chicken curry from the Chettinad region',
+      price: 300.00,
+      category: 'Tamil Nadu Special',
+      stock: 50,
+      imageUrl: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&q=80&w=1000', // Placeholder
+      tags: 'chicken,spicy,curry',
+      isFeatured: true
+    },
+    {
+      name: 'Kothu Parotta',
+      description: 'Minced parotta stir-fried with eggs, meat, and spicy sauce',
+      price: 180.00,
+      category: 'Tamil Nadu Special',
+      stock: 60,
+      imageUrl: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&q=80&w=1000', // Placeholder
+      tags: 'spicy,street-food',
+      isFeatured: false
+    },
+    {
+      name: 'Pongal',
+      description: 'Savory rice and lentil porridge seasoned with black pepper',
+      price: 90.00,
+      category: 'Tamil Nadu Special',
+      stock: 80,
+      imageUrl: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&q=80&w=1000', // Placeholder
+      tags: 'vegetarian,breakfast',
+      isFeatured: false
+    }
+  ];
+
+  // Combine all menus
+  const allProducts = [
+    ...southIndian,
+    ...northIndian,
+    ...chinese,
+    ...kerala,
+    ...tamilNadu
+  ];
+
   console.log('Seeding menu...');
-  for (const item of indianMenu) {
+  for (const item of allProducts) {
       // Upsert products to avoid duplicates
       // We don't have a unique field for products other than ID, but for seeding we can check by name
       const exists = await prisma.product.findFirst({ where: { name: item.name } });
