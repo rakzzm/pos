@@ -81,6 +81,7 @@ export default function InvoicesPage() {
     doc.text('City Centre Complex', 14, 33);
     doc.text('Thrikkadeeri, Kerala', 14, 38);
     doc.text('India, 679502', 14, 43);
+    doc.text('GSTIN: 32AABCU9603R1ZJ', 14, 48);
 
     // Invoice Title
     doc.setFontSize(16);

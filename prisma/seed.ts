@@ -582,36 +582,129 @@ async function main() {
   const invoices = [
     {
       invoiceNumber: 'INV-2024-001',
-      customerName: 'Corporate Client A',
-      grandTotal: 1500.00,
+      customerName: 'Walk-in Customer (Table 5)',
+      grandTotal: 1250.00,
       status: 'paid',
-      issueDate: new Date('2024-01-01'),
+      issueDate: new Date('2024-01-15'),
       dueDate: new Date('2024-01-15'),
       items: [
-        { description: 'Catering Service - Event A', quantity: 1, unitPrice: 1500.00, total: 1500.00 }
+        { description: 'Butter Chicken', quantity: 1, unitPrice: 320.00, total: 320.00 },
+        { description: 'Garlic Naan', quantity: 4, unitPrice: 45.00, total: 180.00 },
+        { description: 'Chicken Fried Rice', quantity: 2, unitPrice: 220.00, total: 440.00 },
+        { description: 'Lime Juice', quantity: 3, unitPrice: 40.00, total: 120.00 }
       ]
     },
     {
       invoiceNumber: 'INV-2024-002',
-      customerName: 'Wedding Party B',
-      grandTotal: 3000.00,
-      status: 'pending',
-      issueDate: new Date('2024-01-10'),
-      dueDate: new Date('2024-02-10'),
+      customerName: 'Zomato Order #8821',
+      grandTotal: 850.50,
+      status: 'paid',
+      issueDate: new Date('2024-01-16'),
+      dueDate: new Date('2024-01-16'),
       items: [
-        { description: 'Hall Booking', quantity: 1, unitPrice: 1000.00, total: 1000.00 },
-        { description: 'Buffet Setup', quantity: 1, unitPrice: 2000.00, total: 2000.00 }
+        { description: 'Chicken Chettinad', quantity: 1, unitPrice: 300.00, total: 300.00 },
+        { description: 'Malabar Parotta', quantity: 5, unitPrice: 25.00, total: 125.00 },
+        { description: 'Gobi Manchurian', quantity: 1, unitPrice: 180.00, total: 180.00 }
       ]
     },
     {
       invoiceNumber: 'INV-2024-003',
-      customerName: 'Regular Customer C',
-      grandTotal: 450.50,
+      customerName: 'John Doe (Takeaway)',
+      grandTotal: 450.00,
+      status: 'paid',
+      issueDate: new Date('2024-01-16'),
+      dueDate: new Date('2024-01-16'),
+      items: [
+        { description: 'Kerala Fish Curry', quantity: 1, unitPrice: 350.00, total: 350.00 },
+        { description: 'Appam', quantity: 4, unitPrice: 25.00, total: 100.00 }
+      ]
+    },
+    {
+      invoiceNumber: 'INV-2024-004',
+      customerName: 'Corporate Lunch (TechSoft)',
+      grandTotal: 5400.00,
+      status: 'pending',
+      issueDate: new Date('2024-01-17'),
+      dueDate: new Date('2024-01-24'),
+      items: [
+        { description: 'Executive Thali', quantity: 20, unitPrice: 250.00, total: 5000.00 },
+        { description: 'Mineral Water', quantity: 20, unitPrice: 20.00, total: 400.00 }
+      ]
+    },
+    {
+      invoiceNumber: 'INV-2024-005',
+      customerName: 'Swiggy Order #9923',
+      grandTotal: 320.00,
+      status: 'paid',
+      issueDate: new Date('2024-01-17'),
+      dueDate: new Date('2024-01-17'),
+      items: [
+        { description: 'Masala Dosa', quantity: 2, unitPrice: 120.00, total: 240.00 },
+        { description: 'Vada', quantity: 2, unitPrice: 40.00, total: 80.00 }
+      ]
+    },
+    {
+      invoiceNumber: 'INV-2024-006',
+      customerName: 'Evening Snacks (Table 2)',
+      grandTotal: 280.00,
+      status: 'paid',
+      issueDate: new Date('2024-01-18'),
+      dueDate: new Date('2024-01-18'),
+      items: [
+        { description: 'Tea', quantity: 4, unitPrice: 20.00, total: 80.00 },
+        { description: 'Parippu Vada', quantity: 4, unitPrice: 25.00, total: 100.00 },
+        { description: 'Banana Fry', quantity: 4, unitPrice: 25.00, total: 100.00 }
+      ]
+    },
+    {
+      invoiceNumber: 'INV-2024-007',
+      customerName: 'Birthday Party Advance',
+      grandTotal: 5000.00,
+      status: 'paid',
+      issueDate: new Date('2024-01-18'),
+      dueDate: new Date('2024-01-18'),
+      items: [
+        { description: 'Hall Booking Advance', quantity: 1, unitPrice: 5000.00, total: 5000.00 }
+      ]
+    },
+    {
+      invoiceNumber: 'INV-2024-008',
+      customerName: 'Regular Customer (Sarah)',
+      grandTotal: 650.00,
       status: 'overdue',
-      issueDate: new Date('2023-12-20'),
+      issueDate: new Date('2023-12-28'),
       dueDate: new Date('2024-01-05'),
       items: [
-        { description: 'Bulk Order - Snacks', quantity: 50, unitPrice: 9.01, total: 450.50 }
+        { description: 'Beef Fry', quantity: 1, unitPrice: 280.00, total: 280.00 },
+        { description: 'Porotta', quantity: 6, unitPrice: 20.00, total: 120.00 },
+        { description: 'Chicken 65', quantity: 1, unitPrice: 250.00, total: 250.00 }
+      ]
+    },
+    {
+      invoiceNumber: 'INV-2024-009',
+      customerName: 'Breakfast Takeout',
+      grandTotal: 180.00,
+      status: 'paid',
+      issueDate: new Date('2024-01-18'),
+      dueDate: new Date('2024-01-18'),
+      items: [
+        { description: 'Idli Set', quantity: 2, unitPrice: 60.00, total: 120.00 },
+        { description: 'Coffee', quantity: 2, unitPrice: 30.00, total: 60.00 }
+      ]
+    },
+    {
+      invoiceNumber: 'INV-2024-010',
+      customerName: 'Family Dinner (Table 8)',
+      grandTotal: 2100.00,
+      status: 'pending',
+      issueDate: new Date('2024-01-18'),
+      dueDate: new Date('2024-01-18'),
+      items: [
+        { description: 'Mixed Fried Rice', quantity: 2, unitPrice: 280.00, total: 560.00 },
+        { description: 'Dragon Chicken', quantity: 1, unitPrice: 320.00, total: 320.00 },
+        { description: 'Chilli Beef', quantity: 1, unitPrice: 300.00, total: 300.00 },
+        { description: 'Fresh Lime Soda', quantity: 4, unitPrice: 60.00, total: 240.00 },
+        { description: 'Ice Cream', quantity: 4, unitPrice: 80.00, total: 320.00 }
       ]
     }
   ];
