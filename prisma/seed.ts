@@ -305,6 +305,219 @@ async function main() {
       }
   }
 
+  // Members
+  const members = [
+    {
+      memberId: 'MEM001',
+      name: 'John Doe',
+      email: 'john@example.com',
+      phone: '555-0201',
+      tier: 'gold',
+      points: 1250,
+      totalSpent: 1250.50,
+      status: 'active',
+      visits: 15,
+      joinDate: new Date('2023-01-01')
+    },
+    {
+      memberId: 'MEM002',
+      name: 'Jane Smith',
+      email: 'jane@example.com',
+      phone: '555-0202',
+      tier: 'silver',
+      points: 450,
+      totalSpent: 450.00,
+      status: 'active',
+      visits: 5,
+      joinDate: new Date('2023-06-15')
+    },
+    {
+      memberId: 'MEM003',
+      name: 'Mike Johnson',
+      email: 'mike@example.com',
+      phone: '555-0203',
+      tier: 'bronze',
+      points: 150,
+      totalSpent: 150.00,
+      status: 'inactive',
+      visits: 2,
+      joinDate: new Date('2023-11-20')
+    }
+  ];
+
+  console.log('Seeding members...');
+  for (const member of members) {
+    const exists = await prisma.member.findUnique({
+      where: { memberId: member.memberId }
+    });
+
+    if (!exists) {
+      await prisma.member.create({ data: member });
+    }
+  }
+
+  // Get referenced products for orders
+  const products = await prisma.product.findMany();
+  if (products.length === 0) {
+    console.warn('No products found to seed orders!');
+  } else {
+    // Orders
+    console.log('Seeding orders...');
+    
+    // Helper to get random product
+    const getRandomProduct = () => products[Math.floor(Math.random() * products.length)];
+    
+    // Create some past orders
+    const ordersToCreate = [
+      {
+        orderNumber: 'ORD-001',
+        customerName: 'John Doe',
+        memberId: members[0].memberId,
+        status: 'completed',
+        total: 45.90,
+        subtotal: 42.00,
+        discount: 0,
+        serviceTax: 3.90,
+        paymentMethod: 'Credit Card',
+        date: new Date(new Date().setDate(today.getDate() - 1)), // Yesterday
+        items: [
+          { quantity: 2, product: getRandomProduct() },
+          { quantity: 1, product: getRandomProduct() }
+        ]
+      },
+      {
+        orderNumber: 'ORD-002',
+        customerName: 'Guest Customer',
+        memberId: null,
+        status: 'completed',
+        total: 25.50,
+        subtotal: 23.00,
+        discount: 0,
+        serviceTax: 2.50,
+        paymentMethod: 'Cash',
+        date: new Date(), // Today
+        items: [
+          { quantity: 1, product: getRandomProduct() }
+        ]
+      },
+      {
+        orderNumber: 'ORD-003',
+        customerName: 'Jane Smith',
+        memberId: members[1].memberId,
+        status: 'pending',
+        total: 60.00,
+        subtotal: 55.00,
+        discount: 5.00,
+        serviceTax: 5.00,
+        paymentMethod: 'UPI',
+        date: new Date(), // Today
+        items: [
+          { quantity: 3, product: getRandomProduct() },
+          { quantity: 1, product: getRandomProduct() }
+        ]
+      }
+    ];
+
+    for (const orderData of ordersToCreate) {
+      const exists = await prisma.order.findUnique({
+        where: { orderNumber: orderData.orderNumber }
+      });
+
+      if (!exists) {
+        // Resolve member ID if present
+        let memberDbId = null;
+        if (orderData.memberId) {
+          const m = await prisma.member.findUnique({ where: { memberId: orderData.memberId }});
+          if (m) memberDbId = m.id;
+        }
+
+        await prisma.order.create({
+          data: {
+            orderNumber: orderData.orderNumber,
+            customerName: orderData.customerName,
+            memberId: memberDbId,
+            total: orderData.total,
+            subtotal: orderData.subtotal,
+            discount: orderData.discount,
+            serviceTax: orderData.serviceTax,
+            status: orderData.status,
+            paymentMethod: orderData.paymentMethod,
+            date: orderData.date,
+            items: {
+              create: orderData.items.map(item => ({
+                productId: item.product.id,
+                name: item.product.name,
+                price: item.product.price,
+                quantity: item.quantity
+              }))
+            }
+          }
+        });
+      }
+    }
+  }
+
+  // Invoices
+  console.log('Seeding invoices...');
+  const invoices = [
+    {
+      invoiceNumber: 'INV-2024-001',
+      customerName: 'Corporate Client A',
+      grandTotal: 1500.00,
+      status: 'paid',
+      issueDate: new Date('2024-01-01'),
+      dueDate: new Date('2024-01-15'),
+      items: [
+        { description: 'Catering Service - Event A', quantity: 1, unitPrice: 1500.00, total: 1500.00 }
+      ]
+    },
+    {
+      invoiceNumber: 'INV-2024-002',
+      customerName: 'Wedding Party B',
+      grandTotal: 3000.00,
+      status: 'pending',
+      issueDate: new Date('2024-01-10'),
+      dueDate: new Date('2024-02-10'),
+      items: [
+        { description: 'Hall Booking', quantity: 1, unitPrice: 1000.00, total: 1000.00 },
+        { description: 'Buffet Setup', quantity: 1, unitPrice: 2000.00, total: 2000.00 }
+      ]
+    },
+    {
+      invoiceNumber: 'INV-2024-003',
+      customerName: 'Regular Customer C',
+      grandTotal: 450.50,
+      status: 'overdue',
+      issueDate: new Date('2023-12-20'),
+      dueDate: new Date('2024-01-05'),
+      items: [
+        { description: 'Bulk Order - Snacks', quantity: 50, unitPrice: 9.01, total: 450.50 }
+      ]
+    }
+  ];
+
+  for (const inv of invoices) {
+    const exists = await prisma.invoice.findUnique({
+      where: { invoiceNumber: inv.invoiceNumber }
+    });
+
+    if (!exists) {
+      await prisma.invoice.create({
+        data: {
+          invoiceNumber: inv.invoiceNumber,
+          customerName: inv.customerName,
+          grandTotal: inv.grandTotal,
+          status: inv.status,
+          issueDate: inv.issueDate,
+          dueDate: inv.dueDate,
+          items: {
+            create: inv.items
+          }
+        }
+      });
+    }
+  }
+
   console.log('Seeding finished.');
 }
 
