@@ -45,5 +45,10 @@
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
+  },
+  "overrides": {
+    "next": "$next",
+    "react": "$react",
+    "react-dom": "$react-dom"
   }
 }
