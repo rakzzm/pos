@@ -16,6 +16,14 @@ async function main() {
       role: 'admin',
       locationId: 'loc1',
       status: 'active'
+    },
+    {
+      email: 'admin@adavakkad.com',
+      password: 'admin123',
+      name: 'New Admin',
+      role: 'admin',
+      locationId: 'loc1',
+      status: 'active'
     }
   ];
 
@@ -54,6 +62,64 @@ async function main() {
   // Actually, for clear demo, I'll delete these specific sample IDs if they exist and recreate them.
   
   const staffMembers = [
+    {
+      name: 'Abhilash',
+      role: 'Admin',
+      email: 'abhilash@advakkad.com',
+      password: 'admin123456', // Will be hashed in real app
+      phone: '9876543210',
+      status: 'active',
+      employeeId: 'EMP001',
+      joinDate: new Date('2023-01-01'),
+      salary: 50000,
+      position: 'Store Manager',
+      department: 'Management',
+      emergencyContact: 'Sister: 9876543211',
+      address: 'Kochi, Kerala',
+      shiftStart: '09:00',
+      shiftEnd: '18:00',
+      hireDate: new Date('2023-01-01'),
+      leaveBalance: {
+        sick: 12,
+        annual: 12,
+        personal: 15
+      },
+      performance: {
+        rating: 4.8,
+        attendance: 98,
+        salesTarget: 1000000,
+        salesAchieved: 1200000
+      }
+    },
+    {
+      name: 'New Admin',
+      role: 'Admin',
+      email: 'admin@adavakkad.com',
+      password: 'admin123',
+      phone: '9998887776',
+      status: 'active',
+      employeeId: 'EMP999',
+      joinDate: new Date('2024-01-01'),
+      salary: 45000,
+      position: 'System Admin',
+      department: 'IT',
+      emergencyContact: 'None',
+      address: 'Remote',
+      shiftStart: '09:00',
+      shiftEnd: '18:00',
+      hireDate: new Date('2024-01-01'),
+      leaveBalance: {
+        sick: 10,
+        annual: 10,
+        personal: 10
+      },
+      performance: {
+        rating: 5.0,
+        attendance: 100,
+        salesTarget: 0,
+        salesAchieved: 0
+      }
+    },
     {
       id: 'staff-kerala-1', employeeId: 'EMP101', name: 'Rahul Menon', email: 'rahul.menon@advakkad.com',
       phone: '9846012345', position: 'Manager', department: 'Management',
@@ -119,7 +185,18 @@ async function main() {
   const createdStaff: { id: string; employeeId: string }[] = [];
 
   for (const staff of staffMembers) {
-    const { leaveBalance, performance, ...data } = staff;
+    const { 
+      leaveBalance, 
+      performance, 
+      role, 
+      password,
+      joinDate, 
+      address, 
+      shiftStart, 
+      shiftEnd, 
+      emergencyContact, 
+      ...data 
+    } = staff;
     
     // Check if exists first to get ID if we can't force ID on update
     // But upsert returns the record!
@@ -449,6 +526,8 @@ async function main() {
           });
       }
   }
+
+
 
   // Members
   const members = [
