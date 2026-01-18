@@ -76,6 +76,8 @@ type StaffStore = {
   addStaff: (staff: Omit<StaffMember, 'id' | 'employeeId' | 'status' | 'leaveBalance' | 'performance'>) => Promise<void>;
   updateStaff: (id: string, staff: Partial<StaffMember>) => Promise<void>;
   deleteStaff: (id: string) => Promise<void>;
+  // Leave Actions
+  requestLeave: (request: Omit<LeaveRequest, 'id' | 'staffName' | 'status' | 'appliedDate'>) => Promise<void>;
   updateLeaveRequest: (id: string, updates: Partial<LeaveRequest>) => Promise<void>;
   
   // Payroll Actions
@@ -206,6 +208,24 @@ export const useStaffStore = create<StaffStore>((set, get) => ({
        const response = await fetch(`/api/staff/${id}`, { method: 'DELETE' });
        if (!response.ok) throw new Error('Failed to delete staff');
        set(state => ({ staff: state.staff.filter(m => m.id !== id) }));
+    } catch (error) {
+      set({ error: (error as Error).message });
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  requestLeave: async (request) => {
+    set({ loading: true, error: null });
+    try {
+      const response = await fetch('/api/leave-requests', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(request),
+      });
+
+      if (!response.ok) throw new Error('Failed to submit leave request');
+      await get().fetchStaff(); // Refresh to show new request
     } catch (error) {
       set({ error: (error as Error).message });
     } finally {

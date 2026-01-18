@@ -55,46 +55,64 @@ async function main() {
   
   const staffMembers = [
     {
-      id: 'staff-sample-1',
-      employeeId: 'EMP001',
-      name: 'Alice Johnson',
-      email: 'alice@adavakkad.com',
-      phone: '555-0101',
-      position: 'Manager',
-      department: 'Management',
-      hireDate: new Date('2023-01-15'),
-      salary: 5000,
-      status: 'active',
-      leaveBalance: { annual: 20, sick: 10, personal: 5 },
-      performance: { rating: 4.8, lastReview: '2023-12-01' }
+      id: 'staff-kerala-1', employeeId: 'EMP101', name: 'Rahul Menon', email: 'rahul.menon@advakkad.com',
+      phone: '9846012345', position: 'Manager', department: 'Management',
+      hireDate: new Date('2022-01-10'), salary: 45000, status: 'active',
+      leaveBalance: { annual: 14, sick: 7, personal: 5 }, performance: { rating: 4.8, lastReview: '2023-12-15' }
     },
     {
-      id: 'staff-sample-2',
-      employeeId: 'EMP002',
-      name: 'Bob Smith',
-      email: 'bob@adavakkad.com',
-      phone: '555-0102',
-      position: 'Cashier',
-      department: 'Sales',
-      hireDate: new Date('2023-03-20'),
-      salary: 3000,
-      status: 'active',
-      leaveBalance: { annual: 15, sick: 10, personal: 5 },
-      performance: { rating: 4.2, lastReview: '2023-11-15' }
+      id: 'staff-kerala-2', employeeId: 'EMP102', name: 'Anjali Nair', email: 'anjali.nair@advakkad.com',
+      phone: '9846012346', position: 'Chef', department: 'Kitchen',
+      hireDate: new Date('2022-03-15'), salary: 38000, status: 'active',
+      leaveBalance: { annual: 12, sick: 6, personal: 5 }, performance: { rating: 4.5, lastReview: '2023-11-20' }
     },
     {
-      id: 'staff-sample-3',
-      employeeId: 'EMP003',
-      name: 'Charlie Brown',
-      email: 'charlie@adavakkad.com',
-      phone: '555-0103',
-      position: 'Chef',
-      department: 'Kitchen',
-      hireDate: new Date('2023-06-10'),
-      salary: 4000,
-      status: 'active', // One inactive/on-leave? Let's keep active for clock-in demo
-      leaveBalance: { annual: 18, sick: 12, personal: 5 },
-      performance: { rating: 4.5, lastReview: '2023-10-30' }
+      id: 'staff-kerala-3', employeeId: 'EMP103', name: 'Sreenath Bhasi', email: 'sreenath.bhasi@advakkad.com',
+      phone: '9846012347', position: 'Chef', department: 'Kitchen',
+      hireDate: new Date('2022-05-20'), salary: 35000, status: 'active',
+      leaveBalance: { annual: 10, sick: 5, personal: 4 }, performance: { rating: 4.2, lastReview: '2023-10-05' }
+    },
+    {
+      id: 'staff-kerala-4', employeeId: 'EMP104', name: 'Kavya Madhavan', email: 'kavya.madhavan@advakkad.com',
+      phone: '9846012348', position: 'Waiter', department: 'Service',
+      hireDate: new Date('2023-01-05'), salary: 18000, status: 'active',
+      leaveBalance: { annual: 14, sick: 7, personal: 5 }, performance: { rating: 4.6, lastReview: '2023-09-15' }
+    },
+    {
+      id: 'staff-kerala-5', employeeId: 'EMP105', name: 'Dulquer Salmaan', email: 'dulquer.salmaan@advakkad.com',
+      phone: '9846012349', position: 'Waiter', department: 'Service',
+      hireDate: new Date('2023-02-14'), salary: 18500, status: 'active',
+      leaveBalance: { annual: 14, sick: 7, personal: 5 }, performance: { rating: 4.9, lastReview: '2023-12-01' }
+    },
+    {
+      id: 'staff-kerala-6', employeeId: 'EMP106', name: 'Nivin Pauly', email: 'nivin.pauly@advakkad.com',
+      phone: '9846012350', position: 'Waiter', department: 'Service',
+      hireDate: new Date('2023-04-01'), salary: 18000, status: 'active',
+      leaveBalance: { annual: 12, sick: 6, personal: 4 }, performance: { rating: 4.4, lastReview: '2023-11-10' }
+    },
+    {
+      id: 'staff-kerala-7', employeeId: 'EMP107', name: 'Parvathy Thiruvothu', email: 'parvathy.t@advakkad.com',
+      phone: '9846012351', position: 'Waiter', department: 'Service',
+      hireDate: new Date('2023-06-15'), salary: 19000, status: 'active',
+      leaveBalance: { annual: 14, sick: 7, personal: 5 }, performance: { rating: 4.7, lastReview: '2023-12-20' }
+    },
+    {
+      id: 'staff-kerala-8', employeeId: 'EMP108', name: 'Fahadh Faasil', email: 'fahadh.faasil@advakkad.com',
+      phone: '9846012352', position: 'Manager', department: 'Management',
+      hireDate: new Date('2021-11-01'), salary: 55000, status: 'active',
+      leaveBalance: { annual: 20, sick: 10, personal: 8 }, performance: { rating: 5.0, lastReview: '2023-12-31' }
+    },
+    {
+      id: 'staff-kerala-9', employeeId: 'EMP109', name: 'Manju Warrier', email: 'manju.warrier@advakkad.com',
+      phone: '9846012353', position: 'Chef', department: 'Kitchen',
+      hireDate: new Date('2022-08-10'), salary: 40000, status: 'active',
+      leaveBalance: { annual: 15, sick: 8, personal: 5 }, performance: { rating: 4.8, lastReview: '2023-10-15' }
+    },
+    {
+      id: 'staff-kerala-10', employeeId: 'EMP110', name: 'Tovino Thomas', email: 'tovino.thomas@advakkad.com',
+      phone: '9846012354', position: 'Waiter', department: 'Service',
+      hireDate: new Date('2023-09-01'), salary: 18500, status: 'active',
+      leaveBalance: { annual: 10, sick: 5, personal: 3 }, performance: { rating: 4.3, lastReview: '2023-11-05' }
     }
   ];
 
@@ -141,50 +159,57 @@ async function main() {
   const yesterday = new Date(today);
   yesterday.setDate(yesterday.getDate() - 1);
 
-  const attendanceData = [
-    // Today
-    {
-      employeeId: 'EMP001', // Use employeeId to lookup
-      date: today,
-      punchIn: '09:00',
-      punchOut: '17:00',
-      totalHours: 8,
-      status: 'present'
-    },
-    {
-        employeeId: 'EMP002',
-        date: today,
-        punchIn: '10:00',
-        punchOut: null,
-        totalHours: 0,
-        status: 'present'
-    },
-    // Yesterday
-    {
-        employeeId: 'EMP001',
-        date: yesterday,
-        punchIn: '09:00',
-        punchOut: '17:30',
-        totalHours: 8.5,
-        status: 'present'
-    },
-    {
-        employeeId: 'EMP002',
-        date: yesterday,
-        punchIn: '10:00',
-        punchOut: '18:00',
-        totalHours: 8,
-        status: 'present'
-    },
-    {
-        employeeId: 'EMP003',
-        date: yesterday,
-        punchIn: '08:00',
-        punchOut: '16:00',
-        totalHours: 8,
-        status: 'present'
+  // Dynamic Attendance Generation for new staff
+  const attendanceData: any[] = [];
+  const startSeedDate = new Date();
+  startSeedDate.setDate(startSeedDate.getDate() - 7); // Last 7 days
+
+  for (let i = 0; i < 8; i++) {
+    const loopDate = new Date(startSeedDate);
+    loopDate.setDate(loopDate.getDate() + i);
+    const dateStr = loopDate.toISOString().split('T')[0];
+    
+    // Skip Sunday
+    if (loopDate.getDay() !== 0) {
+       staffMembers.forEach(staff => {
+           // Random varying times
+           const inHour = 8 + Math.floor(Math.random() * 2); // 8 or 9
+           const inMin = Math.floor(Math.random() * 59);
+           const outHour = 16 + Math.floor(Math.random() * 3); // 16, 17, 18
+           const outMin = Math.floor(Math.random() * 59);
+           
+           // Random Absenteeism (10%)
+           if (Math.random() > 0.1) {
+               attendanceData.push({
+                   employeeId: staff.employeeId,
+                   date: loopDate,
+                   punchIn: `${inHour.toString().padStart(2, '0')}:${inMin.toString().padStart(2, '0')}`,
+                   punchOut: `${outHour.toString().padStart(2, '0')}:${outMin.toString().padStart(2, '0')}`,
+                   totalHours: (outHour + outMin/60) - (inHour + inMin/60),
+                   status: 'present'
+               });
+           }
+       });
     }
-  ];
+  }
+
+  // Seeding Leave Requests
+  console.log('Seeding leave requests...');
+  for (const staff of createdStaff) {
+      if (Math.random() > 0.6) { // 40% chance of having a leave request
+          await prisma.leaveRequest.create({
+              data: {
+                  staffId: staff.id,
+                  type: ['annual', 'sick', 'personal'][Math.floor(Math.random() * 3)],
+                  startDate: new Date(new Date().setDate(new Date().getDate() + Math.floor(Math.random() * 10))),
+                  endDate: new Date(new Date().setDate(new Date().getDate() + Math.floor(Math.random() * 10) + 2)),
+                  reason: 'Personal requirements',
+                  status: ['pending', 'approved', 'rejected'][Math.floor(Math.random() * 3)],
+                  appliedDate: new Date()
+              }
+          });
+      }
+  }
 
   console.log('Seeding attendance...');
   for (const att of attendanceData) {

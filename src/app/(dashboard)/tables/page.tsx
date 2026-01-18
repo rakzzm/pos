@@ -106,7 +106,7 @@ export default function TablesPage() {
                 </div>
                 <div className="p-2 bg-white rounded-lg">
                   <QRCodeSVG
-                    value={`https://adavakkadpos.adavakkad.com/order/table${tableNum}`}
+                    value={`https://adavakkadpos.store/menu/table${tableNum}`}
                     size={200}
                     level="H"
                     includeMargin={true}

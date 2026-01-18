@@ -30,8 +30,8 @@ const formatCurrency = (amount: number) => `₹${amount.toFixed(2)}`;
 export default function ReportsPage() {
   const [dateRange, setDateRange] = useState('week');
   const [showExportOptions, setShowExportOptions] = useState(false);
-  const { products } = useProductStore();
-  const { orders } = useOrderStore();
+  const { products, fetchProducts } = useProductStore();
+  const { orders, fetchOrders } = useOrderStore();
   const { summary, loading, error, calculateSummary } = useSalesStore();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [salesData, setSalesData] = useState<any[]>([]);
@@ -39,6 +39,11 @@ export default function ReportsPage() {
   const [categoryData, setCategoryData] = useState<any[]>([]);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [topProducts, setTopProducts] = useState<any[]>([]);
+
+  useEffect(() => {
+    fetchOrders();
+    fetchProducts();
+  }, [fetchOrders, fetchProducts]);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

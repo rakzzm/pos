@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { QRCodeSVG } from 'qrcode.react';
 import {
-  Settings,
+  Settings as SettingsIcon,
   Store,
   Bell,
   Lock,
@@ -26,6 +27,12 @@ import {
   DollarSign,
   Percent,
   FileText,
+  QrCode,
+  Copy,
+  Check,
+  Menu,
+  Phone,
+  Package,
 } from 'lucide-react';
 
 export default function SettingsPage() {
@@ -75,6 +82,110 @@ export default function SettingsPage() {
 
   const [loading, setLoading] = useState(false);
 
+  // QR Code State
+  const [qrData, setQrData] = useState('https://adavakkadpos.store');
+  const [qrType, setQrType] = useState('url');
+  const [qrSize, setQrSize] = useState(256);
+  const [qrColor, setQrColor] = useState('#000000');
+  const [qrBgColor, setQrBgColor] = useState('#FFFFFF');
+  const [copied, setCopied] = useState(false);
+  const qrRef = useRef<HTMLDivElement>(null);
+
+  // QR Form Data
+  const [qrFormData, setQrFormData] = useState({
+    // URL
+    url: 'https://adavakkadpos.store',
+    // WiFi
+    wifiSSID: 'Restaurant WiFi',
+    wifiPassword: 'password123',
+    wifiEncryption: 'WPA',
+    // Contact (vCard)
+    contactName: 'Restaurant Manager',
+    contactPhone: '+91 1234567890',
+    contactEmail: 'manager@adavakkad.com',
+    contactAddress: '123 Main St, City',
+    // SMS
+    smsNumber: '+91 1234567890',
+    smsMessage: 'Hello from our restaurant!',
+    // Email
+    emailTo: 'info@adavakkad.com',
+    emailSubject: 'Inquiry',
+    emailBody: 'Hello, I would like to...',
+    // Menu
+    menuURL: 'https://adavakkadpos.store/menu/table1',
+    // Payment
+    upiId: 'restaurant@upi',
+    amount: '',
+  });
+
+  const qrTypes = [
+    { id: 'url', name: 'Website URL', icon: Globe, color: 'from-blue-500 to-cyan-500' },
+    { id: 'menu', name: 'Digital Menu', icon: Menu, color: 'from-orange-500 to-amber-500' },
+    { id: 'wifi', name: 'WiFi Network', icon: Wifi, color: 'from-purple-500 to-indigo-500' },
+    { id: 'payment', name: 'UPI Payment', icon: CreditCard, color: 'from-green-500 to-emerald-500' },
+    { id: 'contact', name: 'Contact Card', icon: Phone, color: 'from-pink-500 to-rose-500' },
+    { id: 'sms', name: 'SMS', icon: Smartphone, color: 'from-teal-500 to-cyan-500' },
+    { id: 'email', name: 'Email', icon: Mail, color: 'from-red-500 to-orange-500' },
+    { id: 'product', name: 'Product Link', icon: Package, color: 'from-violet-500 to-purple-500' },
+  ];
+
+  const generateQRData = () => {
+    switch (qrType) {
+      case 'url':
+        return qrFormData.url;
+      case 'menu':
+        return qrFormData.menuURL;
+      case 'wifi':
+        return `WIFI:T:${qrFormData.wifiEncryption};S:${qrFormData.wifiSSID};P:${qrFormData.wifiPassword};;`;
+      case 'contact':
+        return `BEGIN:VCARD\nVERSION:3.0\nFN:${qrFormData.contactName}\nTEL:${qrFormData.contactPhone}\nEMAIL:${qrFormData.contactEmail}\nADR:${qrFormData.contactAddress}\nEND:VCARD`;
+      case 'sms':
+        return `SMSTO:${qrFormData.smsNumber}:${qrFormData.smsMessage}`;
+      case 'email':
+        return `mailto:${qrFormData.emailTo}?subject=${encodeURIComponent(qrFormData.emailSubject)}&body=${encodeURIComponent(qrFormData.emailBody)}`;
+      case 'payment':
+        const amountStr = qrFormData.amount ? `&am=${qrFormData.amount}` : '';
+        return `upi://pay?pa=${qrFormData.upiId}${amountStr}`;
+      case 'product':
+        return qrFormData.url;
+      default:
+        return qrData;
+    }
+  };
+
+  const currentQRData = generateQRData();
+
+  const downloadQR = () => {
+    const svg = qrRef.current?.querySelector('svg');
+    if (!svg) return;
+
+    const svgData = new XMLSerializer().serializeToString(svg);
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+
+    canvas.width = qrSize;
+    canvas.height = qrSize;
+
+    img.onload = () => {
+      ctx?.drawImage(img, 0, 0);
+      const pngFile = canvas.toDataURL('image/png');
+      const downloadLink = document.createElement('a');
+      downloadLink.download = `qr-code-${qrType}.png`;
+      downloadLink.href = pngFile;
+      downloadLink.click();
+    };
+
+    img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(currentQRData);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+
   const handleInputChange = (field: string, value: string | boolean) => {
     setSettings((prev) => ({
       ...prev,
@@ -92,12 +203,13 @@ export default function SettingsPage() {
 
   const tabs = [
     { id: 'business', name: 'Business Info', icon: Store },
-    { id: 'system', name: 'System', icon: Settings },
+    { id: 'system', name: 'System', icon: SettingsIcon },
     { id: 'notifications', name: 'Notifications', icon: Bell },
     { id: 'security', name: 'Security', icon: Lock },
     { id: 'integrations', name: 'Integrations', icon: Zap },
     { id: 'printer', name: 'Printer', icon: Printer },
     { id: 'backup', name: 'Backup & Restore', icon: Database },
+    { id: 'qr', name: 'QR Menu', icon: QrCode },
   ];
 
   return (
@@ -105,7 +217,7 @@ export default function SettingsPage() {
       {/* Header */}
       <div>
         <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-600 to-gray-600 bg-clip-text text-transparent mb-2 flex items-center gap-3">
-          <Settings className="h-10 w-10 text-slate-600" />
+          <SettingsIcon className="h-10 w-10 text-slate-600" />
           Settings
         </h1>
         <p className="text-gray-600">Manage your restaurant POS system settings</p>
@@ -658,6 +770,345 @@ export default function SettingsPage() {
               </div>
             </div>
           )}
+
+           {/* QR Code Tab */}
+           {activeTab === 'qr' && (
+               <div className="space-y-6">
+                 {/* QR Content copied from previous page.tsx */}
+                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                     {/* Left Section - QR Types */}
+                     <div className="lg:col-span-1 space-y-6">
+                       <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                         <h2 className="text-xl font-bold text-gray-900 mb-4">QR Code Type</h2>
+                         <div className="space-y-2">
+                           {qrTypes.map((type) => {
+                             const Icon = type.icon;
+                             return (
+                               <button
+                                 key={type.id}
+                                 onClick={() => setQrType(type.id)}
+                                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                                   qrType === type.id
+                                     ? `bg-gradient-to-r ${type.color} text-white shadow-lg`
+                                     : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                                 }`}
+                               >
+                                 <Icon className="h-5 w-5" />
+                                 <span className="font-medium">{type.name}</span>
+                               </button>
+                             );
+                           })}
+                         </div>
+                       </div>
+             
+                       {/* Customization */}
+                       <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                         <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                           <Palette className="h-5 w-5" />
+                           Customize
+                         </h2>
+                         <div className="space-y-4">
+                           <div>
+                             <label className="block text-sm font-medium text-gray-700 mb-2">Size (px)</label>
+                             <input
+                               type="range"
+                               min="128"
+                               max="512"
+                               step="64"
+                               value={qrSize}
+                               onChange={(e) => setQrSize(Number(e.target.value))}
+                               className="w-full"
+                             />
+                             <div className="text-sm text-gray-600 text-center mt-1">{qrSize}px</div>
+                           </div>
+             
+                           <div className="grid grid-cols-2 gap-4">
+                             <div>
+                               <label className="block text-sm font-medium text-gray-700 mb-2">Foreground</label>
+                               <input
+                                 type="color"
+                                 value={qrColor}
+                                 onChange={(e) => setQrColor(e.target.value)}
+                                 className="w-full h-10 rounded border border-gray-300 cursor-pointer"
+                               />
+                             </div>
+                             <div>
+                               <label className="block text-sm font-medium text-gray-700 mb-2">Background</label>
+                               <input
+                                 type="color"
+                                 value={qrBgColor}
+                                 onChange={(e) => setQrBgColor(e.target.value)}
+                                 className="w-full h-10 rounded border border-gray-300 cursor-pointer"
+                               />
+                             </div>
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+             
+                     {/* Middle Section - Form */}
+                     <div className="lg:col-span-1">
+                       <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
+                         <h2 className="text-xl font-bold text-gray-900 mb-4">Enter Details</h2>
+                         
+                         <div className="space-y-4">
+                           {/* URL */}
+                           {(qrType === 'url' || qrType === 'product') && (
+                             <div>
+                               <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                                 <Globe className="h-4 w-4" />
+                                 Website URL
+                               </label>
+                               <input
+                                 type="url"
+                                 value={qrFormData.url}
+                                 onChange={(e) => setQrFormData({ ...qrFormData, url: e.target.value })}
+                                 placeholder="https://example.com"
+                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                               />
+                             </div>
+                           )}
+             
+                           {/* Menu */}
+                           {qrType === 'menu' && (
+                             <div>
+                               <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+                                 <Menu className="h-4 w-4" />
+                                 Menu URL
+                               </label>
+                               <input
+                                 type="url"
+                                 value={qrFormData.menuURL}
+                                 onChange={(e) => setQrFormData({ ...qrFormData, menuURL: e.target.value })}
+                                 placeholder="https://restaurant.com/menu"
+                                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                               />
+                               <p className="text-xs text-gray-500 mt-1">Customers can scan to view your digital menu</p>
+                             </div>
+                           )}
+             
+                           {/* WiFi */}
+                           {qrType === 'wifi' && (
+                             <>
+                               <div>
+                                 <label className="text-sm font-medium text-gray-700 mb-2 block">Network Name (SSID)</label>
+                                 <input
+                                   type="text"
+                                   value={qrFormData.wifiSSID}
+                                   onChange={(e) => setQrFormData({ ...qrFormData, wifiSSID: e.target.value })}
+                                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                 />
+                               </div>
+                               <div>
+                                 <label className="text-sm font-medium text-gray-700 mb-2 block">Password</label>
+                                 <input
+                                   type="text"
+                                   value={qrFormData.wifiPassword}
+                                   onChange={(e) => setQrFormData({ ...qrFormData, wifiPassword: e.target.value })}
+                                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                 />
+                               </div>
+                               <div>
+                                 <label className="text-sm font-medium text-gray-700 mb-2 block">Encryption</label>
+                                 <select
+                                   value={qrFormData.wifiEncryption}
+                                   onChange={(e) => setQrFormData({ ...qrFormData, wifiEncryption: e.target.value })}
+                                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                 >
+                                   <option value="WPA">WPA/WPA2</option>
+                                   <option value="WEP">WEP</option>
+                                   <option value="nopass">None</option>
+                                 </select>
+                               </div>
+                             </>
+                           )}
+             
+                           {/* Contact */}
+                           {qrType === 'contact' && (
+                             <>
+                               <div>
+                                 <label className="text-sm font-medium text-gray-700 mb-2 block">Name</label>
+                                 <input
+                                   type="text"
+                                   value={qrFormData.contactName}
+                                   onChange={(e) => setQrFormData({ ...qrFormData, contactName: e.target.value })}
+                                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                                 />
+                               </div>
+                               <div>
+                                 <label className="text-sm font-medium text-gray-700 mb-2 block">Phone</label>
+                                 <input
+                                   type="tel"
+                                   value={qrFormData.contactPhone}
+                                   onChange={(e) => setQrFormData({ ...qrFormData, contactPhone: e.target.value })}
+                                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                                 />
+                               </div>
+                               <div>
+                                 <label className="text-sm font-medium text-gray-700 mb-2 block">Email</label>
+                                 <input
+                                   type="email"
+                                   value={qrFormData.contactEmail}
+                                   onChange={(e) => setQrFormData({ ...qrFormData, contactEmail: e.target.value })}
+                                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                                 />
+                               </div>
+                               <div>
+                                 <label className="text-sm font-medium text-gray-700 mb-2 block">Address</label>
+                                 <input
+                                   type="text"
+                                   value={qrFormData.contactAddress}
+                                   onChange={(e) => setQrFormData({ ...qrFormData, contactAddress: e.target.value })}
+                                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                                 />
+                               </div>
+                             </>
+                           )}
+             
+                           {/* SMS */}
+                           {qrType === 'sms' && (
+                             <>
+                               <div>
+                                 <label className="text-sm font-medium text-gray-700 mb-2 block">Phone Number</label>
+                                 <input
+                                   type="tel"
+                                   value={qrFormData.smsNumber}
+                                   onChange={(e) => setQrFormData({ ...qrFormData, smsNumber: e.target.value })}
+                                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                 />
+                               </div>
+                               <div>
+                                 <label className="text-sm font-medium text-gray-700 mb-2 block">Message</label>
+                                 <textarea
+                                   value={qrFormData.smsMessage}
+                                   onChange={(e) => setQrFormData({ ...qrFormData, smsMessage: e.target.value })}
+                                   rows={3}
+                                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent"
+                                 />
+                               </div>
+                             </>
+                           )}
+             
+                           {/* Email */}
+                           {qrType === 'email' && (
+                             <>
+                               <div>
+                                 <label className="text-sm font-medium text-gray-700 mb-2 block">Email To</label>
+                                 <input
+                                   type="email"
+                                   value={qrFormData.emailTo}
+                                   onChange={(e) => setQrFormData({ ...qrFormData, emailTo: e.target.value })}
+                                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                                 />
+                               </div>
+                               <div>
+                                 <label className="text-sm font-medium text-gray-700 mb-2 block">Subject</label>
+                                 <input
+                                   type="text"
+                                   value={qrFormData.emailSubject}
+                                   onChange={(e) => setQrFormData({ ...qrFormData, emailSubject: e.target.value })}
+                                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                                 />
+                               </div>
+                               <div>
+                                 <label className="text-sm font-medium text-gray-700 mb-2 block">Body</label>
+                                 <textarea
+                                   value={qrFormData.emailBody}
+                                   onChange={(e) => setQrFormData({ ...qrFormData, emailBody: e.target.value })}
+                                   rows={3}
+                                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                                 />
+                               </div>
+                             </>
+                           )}
+             
+                           {/* UPI Payment */}
+                           {qrType === 'payment' && (
+                             <>
+                               <div>
+                                 <label className="text-sm font-medium text-gray-700 mb-2 block">UPI ID</label>
+                                 <input
+                                   type="text"
+                                   value={qrFormData.upiId}
+                                   onChange={(e) => setQrFormData({ ...qrFormData, upiId: e.target.value })}
+                                   placeholder="merchant@upi"
+                                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                 />
+                               </div>
+                               <div>
+                                 <label className="text-sm font-medium text-gray-700 mb-2 block">Amount (Optional)</label>
+                                 <input
+                                   type="number"
+                                   value={qrFormData.amount}
+                                   onChange={(e) => setQrFormData({ ...qrFormData, amount: e.target.value })}
+                                   placeholder="0.00"
+                                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                                 />
+                               </div>
+                               <p className="text-xs text-gray-500">Leave amount empty for customer to enter</p>
+                             </>
+                           )}
+                         </div>
+                       </div>
+                     </div>
+             
+                     {/* Right Section - Preview & Download */}
+                     <div className="lg:col-span-1">
+                       <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 sticky top-6">
+                         <h2 className="text-xl font-bold text-gray-900 mb-4">Preview</h2>
+                         
+                         <div 
+                           ref={qrRef}
+                           className="flex justify-center items-center p-8 bg-gray-50 rounded-lg mb-6"
+                         >
+                           <QRCodeSVG
+                             value={currentQRData}
+                             size={qrSize}
+                             level="H"
+                             fgColor={qrColor}
+                             bgColor={qrBgColor}
+                             includeMargin={true}
+                           />
+                         </div>
+             
+                         {/* Actions */}
+                         <div className="space-y-3">
+                           <button
+                             onClick={downloadQR}
+                             className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-600 to-orange-600 text-white rounded-lg hover:from-amber-700 hover:to-orange-700 transition-all shadow-lg"
+                           >
+                             <Download className="h-5 w-5" />
+                             Download QR Code
+                           </button>
+             
+                           <button
+                             onClick={copyToClipboard}
+                             className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-all"
+                           >
+                             {copied ? (
+                               <>
+                                 <Check className="h-5 w-5 text-green-600" />
+                                 Copied!
+                               </>
+                             ) : (
+                               <>
+                                 <Copy className="h-5 w-5" />
+                                 Copy Data
+                               </>
+                             )}
+                           </button>
+                         </div>
+             
+                         {/* Generated Data Preview */}
+                         <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+                           <p className="text-xs font-medium text-gray-600 mb-2">Generated QR Data:</p>
+                           <p className="text-xs text-gray-800 font-mono break-all">{currentQRData}</p>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+               </div>
+           )}
         </div>
       </div>
 

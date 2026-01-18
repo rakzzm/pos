@@ -139,14 +139,7 @@ export default function DashboardLayout({
       glow: 'shadow-lg shadow-teal-500/20',
       glass: 'backdrop-blur-xl bg-white/10 border border-white/20'
     },
-    {
-      name: 'QR Codes',
-      href: '/qr-codes',
-      icon: QrCode,
-      gradient: 'from-amber-500/20 to-orange-500/20',
-      glow: 'shadow-lg shadow-amber-500/20',
-      glass: 'backdrop-blur-xl bg-white/10 border border-white/20'
-    },
+
     {
       name: 'Tables',
       href: '/tables',
