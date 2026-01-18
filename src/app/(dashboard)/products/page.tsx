@@ -558,7 +558,7 @@ export default function ProductsPage() {
         <div className="absolute bottom-20 left-20 w-24 h-24 bg-radial-shine rounded-full animate-glow"></div>
       </div>
 
-      <div className="max-w-7xl mx-auto">
+      <div className="w-full">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-products-primary to-products-secondary bg-clip-text text-transparent mb-2">

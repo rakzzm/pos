@@ -248,7 +248,7 @@ export default function MembersPage() {
         <div className="absolute bottom-20 left-20 w-24 h-24 bg-radial-shine rounded-full animate-glow"></div>
       </div>
 
-      <div className="max-w-7xl mx-auto space-y-8">
+      <div className="w-full space-y-8">
         {/* Header */}
         <div className="flex justify-between items-center">
           <div>

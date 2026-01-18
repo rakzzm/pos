@@ -326,7 +326,7 @@ export default function ReportsPage() {
         <div className="absolute bottom-20 left-20 w-24 h-24 bg-radial-shine rounded-full animate-glow"></div>
       </div>
 
-      <div className="max-w-7xl mx-auto space-y-6">
+      <div className="w-full space-y-6">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-900">Reports & Analytics</h1>
           <div className="flex gap-4">
