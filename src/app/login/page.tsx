@@ -48,7 +48,7 @@ export default function LoginPage() {
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <p className="mt-2 text-2xl font-bold text-sky-800">
-            Advakkad Point of Sales System
+            Adavakkad Point of Sales System
           </p>
           <p className="mt-2 text-sm text-sky-700">
             Sign in to access your dashboard
