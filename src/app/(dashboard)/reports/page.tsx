@@ -12,9 +12,11 @@ import {
   Cell,
   ResponsiveContainer,
   LineChart,
-  Line
+  Line,
+  BarChart,
+  Bar
 } from 'recharts';
-import { Download, Loader, FileSpreadsheet, File as FilePdf } from 'lucide-react';
+import { Download, Loader, FileSpreadsheet, File as FilePdf, AlertTriangle, CheckCircle } from 'lucide-react';
 import { useProductStore } from '../../../stores/productStore';
 import { useOrderStore } from '../../../stores/orderStore';
 import { useSalesStore } from '../../../stores/salesStore';
@@ -69,7 +71,12 @@ export default function ReportsPage() {
     const categories = products.reduce((acc, product) => {
       acc[product.category] = (acc[product.category] || 0) +
         orders.filter(order => order.status === 'completed')
-          .reduce((sum, order) => sum + order.total, 0);
+          .reduce((sum, order) => {
+             // Basic fallback approximation if item-level data isn't easily mapped back to category
+             // But let's try to be precise if products are linked
+             return sum + (order.items?.filter((i: any) => i.name === product.name)
+               .reduce((is: number, i: any) => is + (i.price * i.quantity), 0) || 0);
+          }, 0);
       return acc;
     }, {} as Record<string, number>);
 
@@ -77,24 +84,39 @@ export default function ReportsPage() {
       Object.entries(categories).map(([name, value]) => ({
         name,
         value
-      }))
+      })).filter(c => c.value > 0)
     );
 
-    // Calculate top products
-    const productSales = products.map(product => {
-      const sales = orders
-        .filter(order => order.status === 'completed')
-        .reduce((sum, order) => sum + order.total, 0);
+    // Calculate top products from actual items
+    const productStats = new Map<string, { units: number, revenue: number }>();
+    let totalRevenue = 0;
 
-      return {
-        name: product.name,
-        units: Math.floor(sales / product.price),
-        revenue: sales,
-        growth: ((Math.random() * 30) - 10).toFixed(1)
-      };
+    orders.filter(order => order.status === 'completed').forEach(order => {
+      order.items?.forEach((item: any) => {
+         const current = productStats.get(item.name) || { units: 0, revenue: 0 };
+         const itemRevenue = item.price * item.quantity;
+         productStats.set(item.name, {
+           units: current.units + item.quantity,
+           revenue: current.revenue + itemRevenue
+         });
+         totalRevenue += itemRevenue;
+      });
     });
 
-    setTopProducts(productSales.sort((a, b) => b.revenue - a.revenue).slice(0, 5));
+    const productSales = products.map(product => {
+      const stats = productStats.get(product.name) || { units: 0, revenue: 0 };
+      
+      return {
+        ...product, // Contains stock, price, etc.
+        units: stats.units,
+        revenue: stats.revenue,
+        percentage: totalRevenue > 0 ? ((stats.revenue / totalRevenue) * 100).toFixed(1) : '0.0',
+        growth: ((Math.random() * 30) - 10).toFixed(1), // Mock growth
+        stockStatus: product.stock < 10 ? 'Low' : 'Good'
+      };
+    }).filter(p => p.revenue > 0);
+
+    setTopProducts(productSales.sort((a, b) => b.revenue - a.revenue).slice(0, 10)); // Top 10
   };
 
   const exportToExcel = () => {
@@ -199,28 +221,11 @@ export default function ReportsPage() {
       }
     });
 
-    // Sales Trend Chart
+    // Sales Trend Chart (Placeholder)
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     yPos = (doc as any).lastAutoTable.finalY + 20;
-    doc.addPage();
-    addGradientBackground(0, pageHeight);
-
-    doc.setFontSize(16);
-    doc.setTextColor(darkBlue);
-    doc.text('Sales Trend Analysis', 14, 20);
-
-    // Convert chart to image
-    const chartContainer = document.querySelector('.sales-trend-chart') as HTMLElement;
-    if (chartContainer) {
-      // Use html2canvas to capture the chart (you'll need to add this dependency)
-      // html2canvas(chartContainer).then(canvas => {
-      //   const chartImage = canvas.toDataURL('image/png');
-      //   doc.addImage(chartImage, 'PNG', 10, 30, 190, 100);
-      // });
-    }
-
+    
     // Category Distribution
-    yPos = 140;
     doc.setFontSize(16);
     doc.text('Sales by Category', 14, yPos);
 
@@ -261,12 +266,13 @@ export default function ReportsPage() {
 
     autoTable(doc, {
       startY: 25,
-      head: [['Product', 'Units', 'Revenue', 'Growth']],
+      head: [['Product', 'Units', 'Revenue', '% of Sales', 'Stock']],
       body: topProducts.map(product => [
         product.name,
         product.units,
         formatCurrency(product.revenue),
-        `${product.growth}%`
+        `${product.percentage}%`,
+        product.stockStatus
       ]),
       theme: 'grid',
       styles: {
@@ -483,18 +489,37 @@ export default function ReportsPage() {
               </ResponsiveContainer>
             </div>
           </div>
+          
+           {/* Top Products Bar Chart */}
+          <div className="bg-white p-6 rounded-lg shadow lg:col-span-2">
+            <h2 className="text-lg font-medium text-gray-900 mb-4">Top 5 Products by Revenue</h2>
+            <div className="h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={topProducts.slice(0, 5)} layout="vertical" margin={{ left: 50 }}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis type="number" />
+                  <YAxis type="category" dataKey="name" width={100} />
+                  <Tooltip formatter={(value: number) => formatCurrency(value)} />
+                  <Legend />
+                  <Bar dataKey="revenue" fill="#4F46E5" name="Revenue (₹)" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
         </div>
 
         {/* Top Products Table */}
         <div className="bg-white p-6 rounded-lg shadow">
-          <h2 className="text-lg font-medium text-gray-900 mb-4">Top Selling Products</h2>
+          <h2 className="text-lg font-medium text-gray-900 mb-4">Top Selling Products Details</h2>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Units Sold</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Revenue</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">% of Sales</th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Growth</th>
                 </tr>
               </thead>
@@ -502,8 +527,17 @@ export default function ReportsPage() {
                 {topProducts.map((product, index) => (
                   <tr key={index}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{product.name}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        product.stockStatus === 'Low' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
+                      }`}>
+                        {product.stockStatus === 'Low' ? <AlertTriangle className="inline h-3 w-3 mr-1"/> : <CheckCircle className="inline h-3 w-3 mr-1"/>}
+                        {product.stock} ({product.stockStatus})
+                      </span>
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.units}</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{formatCurrency(product.revenue)}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.percentage}%</td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-green-600">
                       {Number(product.growth) > 0 ? '+' : ''}{product.growth}%
                     </td>
