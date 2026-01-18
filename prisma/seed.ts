@@ -310,7 +310,7 @@ async function main() {
       price: 180.00,
       category: 'Chinese',
       stock: 60,
-      imageUrl: 'https://images.unsplash.com/photo-1625398407796-82650a8c96b2?auto=format&fit=crop&q=80&w=1000',
+      imageUrl: '/products/gobi-manchurian.png',
       tags: 'vegetarian,starter,spicy',
       isFeatured: true
     },
@@ -376,7 +376,7 @@ async function main() {
       price: 300.00,
       category: 'Tamil Nadu Special',
       stock: 50,
-      imageUrl: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&q=80&w=1000', // Placeholder
+      imageUrl: '/products/chicken-chettinad.png',
       tags: 'chicken,spicy,curry',
       isFeatured: true
     },

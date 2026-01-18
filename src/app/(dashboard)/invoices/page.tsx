@@ -73,13 +73,14 @@ export default function InvoicesPage() {
     // Add Company Logo/Header
     doc.setFontSize(20);
     doc.setTextColor(40, 40, 40);
-    doc.text('Adavakkad Collections', 14, 22);
-
+    doc.text('Advakkad Restaurant', 14, 22);
+    
     doc.setFontSize(10);
     doc.setTextColor(100, 100, 100);
-    doc.text('123 Main Street, City', 14, 28);
-    doc.text('Phone: +91 1234567890', 14, 33);
-    doc.text('Email: info@adavakkad.com', 14, 38);
+    doc.text('4/425 I J 4/427', 14, 28);
+    doc.text('City Centre Complex', 14, 33);
+    doc.text('Thrikkadeeri, Kerala', 14, 38);
+    doc.text('India, 679502', 14, 43);
 
     // Invoice Title
     doc.setFontSize(16);
