@@ -490,49 +490,161 @@ async function main() {
     // Create some past orders
     const ordersToCreate = [
       {
-        orderNumber: 'ORD-001',
-        customerName: 'John Doe',
-        memberId: members[0].memberId,
+        orderNumber: 'ORD-2024-001',
+        customerName: 'Rahul Menon',
+        memberId: null,
         status: 'completed',
-        total: 45.90,
-        subtotal: 42.00,
+        total: 540.00,
+        subtotal: 500.00,
         discount: 0,
-        serviceTax: 3.90,
-        paymentMethod: 'Credit Card',
-        date: new Date(new Date().setDate(today.getDate() - 1)), // Yesterday
+        serviceTax: 40.00,
+        paymentMethod: 'UPI',
+        date: new Date(new Date().setDate(today.getDate() - 2)),
         items: [
           { quantity: 2, product: getRandomProduct() },
           { quantity: 1, product: getRandomProduct() }
         ]
       },
       {
-        orderNumber: 'ORD-002',
-        customerName: 'Guest Customer',
+        orderNumber: 'ORD-2024-002',
+        customerName: 'Guest (Table 4)',
         memberId: null,
         status: 'completed',
-        total: 25.50,
-        subtotal: 23.00,
+        total: 320.00,
+        subtotal: 300.00,
         discount: 0,
-        serviceTax: 2.50,
+        serviceTax: 20.00,
         paymentMethod: 'Cash',
-        date: new Date(), // Today
+        date: new Date(new Date().setDate(today.getDate() - 2)),
+        items: [
+          { quantity: 1, product: getRandomProduct() },
+          { quantity: 2, product: getRandomProduct() }
+        ]
+      },
+      {
+        orderNumber: 'ORD-2024-003',
+        customerName: 'Deepa Nair',
+        memberId: null,
+        status: 'completed',
+        total: 850.00,
+        subtotal: 800.00,
+        discount: 20.00,
+        serviceTax: 70.00,
+        paymentMethod: 'Card',
+        date: new Date(new Date().setDate(today.getDate() - 1)),
+        items: [
+          { quantity: 3, product: getRandomProduct() },
+          { quantity: 1, product: getRandomProduct() }
+        ]
+      },
+      {
+        orderNumber: 'ORD-2024-004',
+        customerName: 'Guest (Table 7)',
+        memberId: null,
+        status: 'serving',
+        total: 1200.00,
+        subtotal: 1150.00,
+        discount: 0,
+        serviceTax: 50.00,
+        paymentMethod: 'Cash',
+        date: new Date(),
+        items: [
+          { quantity: 4, product: getRandomProduct() },
+          { quantity: 2, product: getRandomProduct() }
+        ]
+      },
+      {
+        orderNumber: 'ORD-2024-005',
+        customerName: 'Arjun Pillai',
+        memberId: null,
+        status: 'pending',
+        total: 250.00,
+        subtotal: 240.00,
+        discount: 0,
+        serviceTax: 10.00,
+        paymentMethod: 'UPI',
+        date: new Date(),
         items: [
           { quantity: 1, product: getRandomProduct() }
         ]
       },
       {
-        orderNumber: 'ORD-003',
-        customerName: 'Jane Smith',
-        memberId: members[1].memberId,
-        status: 'pending',
-        total: 60.00,
-        subtotal: 55.00,
-        discount: 5.00,
-        serviceTax: 5.00,
+        orderNumber: 'ORD-2024-006',
+        customerName: 'Guest (Table 12)',
+        memberId: null,
+        status: 'completed',
+        total: 1560.00,
+        subtotal: 1500.00,
+        discount: 50.00,
+        serviceTax: 110.00,
+        paymentMethod: 'Card',
+        date: new Date(new Date().setDate(today.getDate() - 1)),
+        items: [
+          { quantity: 2, product: getRandomProduct() },
+          { quantity: 2, product: getRandomProduct() },
+          { quantity: 1, product: getRandomProduct() }
+        ]
+      },
+      {
+        orderNumber: 'ORD-2024-007',
+        customerName: 'Lakshmi Krishnan',
+        memberId: null,
+        status: 'completed',
+        total: 440.00,
+        subtotal: 420.00,
+        discount: 0,
+        serviceTax: 20.00,
         paymentMethod: 'UPI',
-        date: new Date(), // Today
+        date: new Date(),
+        items: [
+          { quantity: 2, product: getRandomProduct() }
+        ]
+      },
+      {
+        orderNumber: 'ORD-2024-008',
+        customerName: 'Guest (Table 2)',
+        memberId: null,
+        status: 'kitchen',
+        total: 980.00,
+        subtotal: 900.00,
+        discount: 0,
+        serviceTax: 80.00,
+        paymentMethod: 'Cash',
+        date: new Date(),
         items: [
           { quantity: 3, product: getRandomProduct() },
+          { quantity: 1, product: getRandomProduct() }
+        ]
+      },
+      {
+        orderNumber: 'ORD-2024-009',
+        customerName: 'Vinu Thomas',
+        memberId: null,
+        status: 'completed',
+        total: 670.00,
+        subtotal: 650.00,
+        discount: 10.00,
+        serviceTax: 30.00,
+        paymentMethod: 'Card',
+        date: new Date(new Date().setDate(today.getDate() - 3)),
+        items: [
+          { quantity: 1, product: getRandomProduct() },
+          { quantity: 2, product: getRandomProduct() }
+        ]
+      },
+      {
+        orderNumber: 'ORD-2024-010',
+        customerName: 'Anjali Devi',
+        memberId: null,
+        status: 'pending',
+        total: 310.00,
+        subtotal: 300.00,
+        discount: 0,
+        serviceTax: 10.00,
+        paymentMethod: 'UPI',
+        date: new Date(),
+        items: [
+          { quantity: 1, product: getRandomProduct() },
           { quantity: 1, product: getRandomProduct() }
         ]
       }
