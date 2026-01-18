@@ -228,7 +228,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-dashboard-bg via-dashboard-bg/30 to-dashboard-bg/80 relative overflow-hidden">
+    <div className="relative">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-dashboard-primary/20 to-dashboard-secondary/20 rounded-full blur-3xl animate-float"></div>

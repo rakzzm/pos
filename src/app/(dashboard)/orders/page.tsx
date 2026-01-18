@@ -508,7 +508,7 @@ export default function OrdersPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orders-bg via-orders-bg/30 to-orders-bg/80 relative overflow-hidden">
+    <div className="relative">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-orders-primary/20 to-orders-secondary/20 rounded-full blur-3xl animate-float"></div>

@@ -548,7 +548,7 @@ export default function ProductsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-products-bg via-products-bg/30 to-products-bg/80 relative overflow-hidden">
+    <div className="relative">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-products-primary/20 to-products-secondary/20 rounded-full blur-3xl animate-float"></div>

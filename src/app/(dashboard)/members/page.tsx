@@ -238,7 +238,7 @@ export default function MembersPage() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-members-bg via-members-bg/30 to-members-bg/80 relative overflow-hidden">
+    <div className="relative">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-members-primary/20 to-members-secondary/20 rounded-full blur-3xl animate-float"></div>
