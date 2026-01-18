@@ -2,7 +2,7 @@
   "name": "restaurant-pos",
   "type": "module",
   "scripts": {
-    "dev": "next dev -p 7004",
+    "dev": "prisma generate && next dev -p 7004",
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint"
