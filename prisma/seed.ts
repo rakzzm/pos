@@ -224,7 +224,7 @@ async function main() {
       price: 120.00,
       category: 'South Indian',
       stock: 100,
-      imageUrl: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&q=80&w=1000',
+      imageUrl: '/products/Masala%20Dosa.png',
       tags: 'vegetarian,breakfast,popular',
       isFeatured: true
     },
@@ -234,7 +234,7 @@ async function main() {
       price: 80.00,
       category: 'South Indian',
       stock: 150,
-      imageUrl: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&q=80&w=1000', // Placeholder
+      imageUrl: '/products/Idli%20Vada%20Set.png',
       tags: 'vegetarian,breakfast',
       isFeatured: false
     },
@@ -244,7 +244,7 @@ async function main() {
       price: 100.00,
       category: 'South Indian',
       stock: 80,
-      imageUrl: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&q=80&w=1000', // Placeholder
+      imageUrl: '/products/Uttapam.png',
       tags: 'vegetarian,breakfast',
       isFeatured: false
     }
@@ -257,7 +257,7 @@ async function main() {
       price: 320.00,
       category: 'North Indian',
       stock: 50,
-      imageUrl: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&q=80&w=1000',
+      imageUrl: '/products/Butter%20Chicken.png',
       tags: 'curry,chicken,popular',
       isFeatured: true
     },
@@ -267,7 +267,7 @@ async function main() {
       price: 240.00,
       category: 'North Indian',
       stock: 60,
-      imageUrl: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&q=80&w=1000',
+      imageUrl: '/products/Dal%20Makhani.png',
       tags: 'vegetarian,curry,popular',
       isFeatured: true
     },
@@ -277,7 +277,7 @@ async function main() {
       price: 45.00,
       category: 'North Indian',
       stock: 200,
-      imageUrl: 'https://images.unsplash.com/photo-1626074353765-517a681e40be?auto=format&fit=crop&q=80&w=1000',
+      imageUrl: '/products/Garlic%20Naan.png',
       tags: 'bread,side',
       isFeatured: false
     },
@@ -287,7 +287,7 @@ async function main() {
       price: 280.00,
       category: 'North Indian',
       stock: 45,
-      imageUrl: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&q=80&w=1000',
+      imageUrl: '/products/Paneer%20Butter%20Masala.png',
       tags: 'vegetarian,paneer,curry',
       isFeatured: false
     }
@@ -300,7 +300,7 @@ async function main() {
       price: 220.00,
       category: 'Chinese',
       stock: 75,
-      imageUrl: 'https://images.unsplash.com/photo-1603133872878-684f571d70f2?auto=format&fit=crop&q=80&w=1000',
+      imageUrl: '/products/Chicken%20Fried%20Rice.png',
       tags: 'rice,chicken',
       isFeatured: false
     },
@@ -320,7 +320,7 @@ async function main() {
       price: 200.00,
       category: 'Chinese',
       stock: 80,
-      imageUrl: 'https://images.unsplash.com/photo-1585032226651-759b368d72b7?auto=format&fit=crop&q=80&w=1000',
+      imageUrl: '/products/Hakka%20Noodles.png',
       tags: 'vegetarian,noodles',
       isFeatured: false
     }
@@ -333,7 +333,7 @@ async function main() {
       price: 350.00,
       category: 'Kerala Special',
       stock: 40,
-      imageUrl: 'https://images.unsplash.com/photo-1626509653294-46d9263a2333?auto=format&fit=crop&q=80&w=1000',
+      imageUrl: '/products/Kerala%20Fish%20Curry.png',
       tags: 'seafood,spicy,curry',
       isFeatured: true
     },
@@ -343,7 +343,7 @@ async function main() {
       price: 150.00,
       category: 'Kerala Special',
       stock: 55,
-      imageUrl: 'https://images.unsplash.com/photo-1626074353765-517a681e40be?auto=format&fit=crop&q=80&w=1000', // Placeholder
+      imageUrl: '/products/Appam%20with%20Stew.png',
       tags: 'vegetarian,breakfast',
       isFeatured: true
     },
@@ -353,7 +353,7 @@ async function main() {
       price: 280.00,
       category: 'Kerala Special',
       stock: 45,
-      imageUrl: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&q=80&w=1000', // Placeholder
+      imageUrl: '/products/Beef%20Fry.png',
       tags: 'meat,spicy,popular',
       isFeatured: false
     },
@@ -386,7 +386,7 @@ async function main() {
       price: 180.00,
       category: 'Tamil Nadu Special',
       stock: 60,
-      imageUrl: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?auto=format&fit=crop&q=80&w=1000', // Placeholder
+      imageUrl: '/products/Kothu%20Parotta.png',
       tags: 'spicy,street-food',
       isFeatured: false
     },
@@ -396,7 +396,7 @@ async function main() {
       price: 90.00,
       category: 'Tamil Nadu Special',
       stock: 80,
-      imageUrl: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&q=80&w=1000', // Placeholder
+      imageUrl: '/products/Pongal.png',
       tags: 'vegetarian,breakfast',
       isFeatured: false
     }
