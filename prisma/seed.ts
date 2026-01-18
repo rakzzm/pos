@@ -6,43 +6,13 @@ async function main() {
   console.log('Start seeding ...');
 
   // Seed Users
+  // Seed Users
+  // Only create the specific admin user requested
   const users = [
-    {
-      email: 'rakesh@adavakkad.com',
-      password: 'admin12345',
-      name: 'Rakesh',
-      role: 'admin',
-      locationId: 'loc1',
-      status: 'active'
-    },
-    {
-      email: 'sandeep@adavakkad.com',
-      password: 'admin12345',
-      name: 'Sandeep',
-      role: 'admin',
-      locationId: 'loc1',
-      status: 'active'
-    },
-    {
-      email: 'manager@adavakkad.com',
-      password: 'manager123',
-      name: 'Manager User',
-      role: 'manager',
-      locationId: 'loc1',
-      status: 'active'
-    },
-    {
-      email: 'user@adavakkad.com',
-      password: 'user123',
-      name: 'Regular User',
-      role: 'user',
-      locationId: 'loc1',
-      status: 'active'
-    },
     {
       email: 'abhilash@advakkad.com',
       password: 'admin123456',
-      name: 'Abhilash',
+      name: 'Abhilash', // Assuming name from email
       role: 'admin',
       locationId: 'loc1',
       status: 'active'
@@ -50,6 +20,16 @@ async function main() {
   ];
 
   console.log('Seeding users...');
+  
+  // Cleanup: Remove any other users (e.g. from previous seeds if not running reset)
+  await prisma.user.deleteMany({
+    where: {
+      email: {
+        notIn: users.map(u => u.email)
+      }
+    }
+  });
+
   for (const user of users) {
     const exists = await prisma.user.findUnique({
       where: { email: user.email }
