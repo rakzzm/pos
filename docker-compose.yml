@@ -12,7 +12,7 @@ services:
     environment:
       - DATABASE_URL=file:/app/data/dev.db
     volumes:
-      - ./dev.db:/app/data/dev.db
+      - ./prisma/dev.db:/app/data/dev.db
     networks:
       - app_network
 
