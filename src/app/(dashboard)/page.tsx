@@ -142,7 +142,10 @@ const QuickActionCard = ({ title, description, icon: Icon, onClick, color = 'blu
     blue: 'from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700',
     green: 'from-green-500 to-green-600 hover:from-green-600 hover:to-green-700',
     purple: 'from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700',
-    orange: 'from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700'
+    orange: 'from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700',
+    pink: 'from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700',
+    cyan: 'from-cyan-500 to-cyan-600 hover:from-cyan-600 hover:to-cyan-700',
+    red: 'from-red-500 to-red-600 hover:from-red-600 hover:to-red-700'
   };
 
   return (
