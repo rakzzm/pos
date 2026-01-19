@@ -13,6 +13,7 @@ export async function GET() {
         createdAt: 'desc',
       },
     });
+    console.log(`API: Fetched ${staff.length} staff members`);
     return NextResponse.json(staff);
   } catch (error) {
     console.error('Error fetching staff:', error);
