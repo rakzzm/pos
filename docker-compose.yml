@@ -10,9 +10,9 @@ services:
     ports:
       - "7004:3000"
     environment:
-      - DATABASE_URL=file:/app/data/dev.db
+      - DATABASE_URL=file:/app/prisma/dev.db
     volumes:
-      - ./prisma/dev.db:/app/data/dev.db
+      - ./prisma/dev.db:/app/prisma/dev.db
     networks:
       - app_network
 
