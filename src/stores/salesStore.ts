@@ -167,7 +167,7 @@ export const useSalesStore = create<SalesStore>((set) => ({
       // Calculate Hourly Sales (For Today, if period is 'today' or regardless? Dashboard usually shows 'Orders by Hour' for current day)
       // We will calculate for 'Today' always for that specific chart
       const hourlyMap = new Map<string, number>();
-      const hourlySales = [];
+      const hourlySales: Array<{ hour: string; orders: number }> = [];
       const ampm = (h: number) => h < 12 ? `${h === 0 ? 12 : h}AM` : `${h === 12 ? 12 : h - 12}PM`;
       
       // Init hours 9AM to 9PM (business hours)
