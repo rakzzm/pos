@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { useOrderStore } from './orderStore';
+import { useProductStore } from './productStore';
 
 type SalesSummary = {
   grossAmount: number;
@@ -21,6 +22,11 @@ type SalesSummary = {
   customerAverageValue: number;
   openOrderQuantity: number;
   openOrderAmount: number;
+  categoryBreakdown: Array<{
+    name: string;
+    value: number;
+    sales: number;
+  }>;
 };
 
 type Period = 'today' | 'yesterday' | 'week' | 'month';
@@ -41,6 +47,13 @@ export const useSalesStore = create<SalesStore>((set) => ({
     set({ loading: true, error: null });
     try {
       const orders = useOrderStore.getState().orders;
+      
+      // We need products to determine categories
+      // We'll import it dynamically or assume it's loaded. 
+      // Better to use import inside to avoid circular dependency issues if any,
+      // but standard import at top is clearer. We'll use the hook's getState.
+      const products = useProductStore.getState().products;
+
       const now = new Date();
       const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
       
@@ -76,6 +89,29 @@ export const useSalesStore = create<SalesStore>((set) => ({
       const totalItems = completedOrders.reduce((sum, order) => sum + order.items.reduce((acc, item) => acc + item.quantity, 0), 0);
       const uniqueCustomers = new Set(completedOrders.map(order => order.customerName)).size;
 
+      // Calculate Category Breakdown
+      const categoryMap = new Map<string, number>();
+      
+      completedOrders.forEach(order => {
+        order.items.forEach(item => {
+           // Find product to get category
+           const product = products.find(p => p.id === item.productId);
+           if (product) {
+             const category = product.category || 'Others';
+             const amount = item.price * item.quantity; // Assuming item has price and quantity
+             categoryMap.set(category, (categoryMap.get(category) || 0) + amount);
+           }
+        });
+      });
+
+      const categoryBreakdown = Array.from(categoryMap.entries()).map(([name, sales]) => {
+         // Calculate percentage logic if needed for value, or just use sales
+         // For pie chart 'value', usually we want a number representing proportion.
+         // Let's use percentage of total sales.
+         const value = totalAmount > 0 ? parseFloat(((sales / totalAmount) * 100).toFixed(1)) : 0;
+         return { name, value, sales };
+      }).sort((a, b) => b.sales - a.sales); // CSS colors often match order, so sorting helps consistency
+
       const summary: SalesSummary = {
         grossAmount: totalAmount,
         netSales: totalAmount * 0.9, // Assuming 10% goes to various deductions
@@ -95,7 +131,8 @@ export const useSalesStore = create<SalesStore>((set) => ({
         averageUnit: completedOrders.length ? totalItems / completedOrders.length : 0,
         customerAverageValue: uniqueCustomers ? totalAmount / uniqueCustomers : 0,
         openOrderQuantity: pendingOrders.length,
-        openOrderAmount: pendingOrders.reduce((sum, order) => sum + order.total, 0)
+        openOrderAmount: pendingOrders.reduce((sum, order) => sum + order.total, 0),
+        categoryBreakdown
       };
 
       set({ summary });

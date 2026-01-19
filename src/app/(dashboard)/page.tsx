@@ -54,13 +54,7 @@ const salesTrendData = [
   { name: 'Sun', sales: 7000, orders: 45 }
 ];
 
-const categoryData = [
-  { name: 'Pizza', value: 35, sales: 15400 },
-  { name: 'Burgers', value: 25, sales: 11200 },
-  { name: 'Drinks', value: 20, sales: 8900 },
-  { name: 'Desserts', value: 15, sales: 6700 },
-  { name: 'Others', value: 5, sales: 2200 }
-];
+
 
 const hourlyData = [
   { hour: '9AM', orders: 5 },
@@ -187,7 +181,7 @@ export default function DashboardPage() {
     if (orders.length > 0) {
       calculateSummary(selectedPeriod);
     }
-  }, [selectedPeriod, calculateSummary, orders]);
+  }, [selectedPeriod, calculateSummary, orders, products]);
   
   const invoiceStats = getInvoiceStats();
   
@@ -416,7 +410,7 @@ export default function DashboardPage() {
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
-                    data={categoryData}
+                    data={summary.categoryBreakdown && summary.categoryBreakdown.length > 0 ? summary.categoryBreakdown : [{ name: 'No Data', value: 100, sales: 0 }]}
                     cx="50%"
                     cy="50%"
                     innerRadius={60}
@@ -424,7 +418,7 @@ export default function DashboardPage() {
                     paddingAngle={5}
                     dataKey="value"
                   >
-                    {categoryData.map((_, index) => (
+                    {(summary.categoryBreakdown && summary.categoryBreakdown.length > 0 ? summary.categoryBreakdown : [{ name: 'No Data', value: 100 }]).map((_, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
