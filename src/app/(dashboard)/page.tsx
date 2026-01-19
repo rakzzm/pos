@@ -328,6 +328,8 @@ export default function DashboardPage() {
             color="purple"
           />
 
+        </div>
+
         {/* Charts Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Sales Trend */}
