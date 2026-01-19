@@ -189,9 +189,9 @@ export const useSalesStore = create<SalesStore>((set) => ({
       });
 
       // Convert to array
-      for (const [hour, count] of hourlyMap.entries()) {
+      Array.from(hourlyMap.entries()).forEach(([hour, count]) => {
         hourlySales.push({ hour, orders: count });
-      }
+      });
 
       const summary: SalesSummary = {
         grossAmount: totalAmount,
