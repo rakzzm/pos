@@ -37,6 +37,8 @@ import { useSalesStore } from '../../stores/salesStore';
 import { useProductStore } from '../../stores/productStore';
 // import { useOrderStore } from '../../stores/orderStore';
 import { useMemberStore } from '../../stores/memberStore';
+import { useInvoiceStore } from '../../stores/invoiceStore';
+import { QrCode, Brain, FileText } from 'lucide-react';
 
 const COLORS = ['#3B82F6', '#06B6D4', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6'];
 const formatCurrency = (amount: number) => `₹${amount.toFixed(2)}`;
@@ -162,14 +164,11 @@ const QuickActionCard = ({ title, description, icon: Icon, onClick, color = 'blu
 export default function DashboardPage() {
   const router = useRouter();
   const [selectedPeriod, setSelectedPeriod] = useState<'today' | 'yesterday' | 'week' | 'month'>('today');
-  const { summary, loading, error, calculateSummary } = useSalesStore();
-  const { products } = useProductStore();
-  const { members } = useMemberStore();
-
-  useEffect(() => {
-    calculateSummary(selectedPeriod);
-  }, [selectedPeriod, calculateSummary]);
-
+  const { getInvoiceStats } = useInvoiceStore();
+  // const { activeStaff } = useAttendanceStore(); // Assuming similar accessor or we count them
+  
+  const invoiceStats = getInvoiceStats();
+  
   const quickActions = [
     {
       title: 'New Order',
@@ -179,24 +178,52 @@ export default function DashboardPage() {
       onClick: () => router.push('/orders')
     },
     {
+      title: 'Smart POS',
+      description: 'AI-powered Point of Sale',
+      icon: Zap,
+      color: 'purple',
+      onClick: () => router.push('/smart-pos')
+    },
+    {
+      title: 'Table Management',
+      description: 'Manage tables & QR codes',
+      icon: QrCode, // Changed from default
+      color: 'orange',
+      onClick: () => router.push('/tables')
+    },
+    {
+      title: 'E-Invoicing',
+      description: 'Create & send invoices',
+      icon: FileText,
+      color: 'green',
+      onClick: () => router.push('/invoices')
+    },
+    {
+      title: 'AI Insights',
+      description: 'Business intelligence',
+      icon: Brain,
+      color: 'pink',
+      onClick: () => router.push('/ai-insights')
+    },
+    {
       title: 'Add Product',
       description: 'Add new menu item',
       icon: Package,
-      color: 'green',
+      color: 'cyan',
       onClick: () => router.push('/products')
     },
     {
       title: 'View Reports',
       description: 'Check sales analytics',
       icon: BarChart,
-      color: 'purple',
+      color: 'red',
       onClick: () => router.push('/reports')
     },
     {
       title: 'Manage Staff',
       description: 'Staff and attendance',
       icon: Users,
-      color: 'orange',
+      color: 'blue',
       onClick: () => router.push('/staff')
     }
   ];
@@ -223,9 +250,7 @@ export default function DashboardPage() {
     );
   }
 
-  if (!summary) {
-    return null;
-  }
+  if (!summary) return null;
 
   return (
     <div className="relative">
@@ -286,6 +311,14 @@ export default function DashboardPage() {
             color="green"
           />
           <MetricCard
+            title="Pending Invoices"
+            value={invoiceStats.pending}
+            subtitle={`${formatCurrency(invoiceStats.totalRevenue)} potential revenue`}
+            icon={FileText}
+            trend="neutral"
+            color="orange"
+          />
+          <MetricCard
             title="Active Products"
             value={products.length}
             subtitle={`${products.filter(p => p.stock <= 10).length} low stock items`}
@@ -294,29 +327,6 @@ export default function DashboardPage() {
             trendValue="2.1"
             color="purple"
           />
-          <MetricCard
-            title="Total Members"
-            value={members.length}
-            subtitle="Registered customers"
-            icon={Users}
-            trend="up"
-            trendValue="15.8"
-            color="orange"
-          />
-        </div>
-
-        {/* Quick Actions */}
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 shadow-xl border border-gray-100">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-            <Zap className="w-8 h-8 mr-3 text-dashboard-primary" />
-            Quick Actions
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {quickActions.map((action, index) => (
-              <QuickActionCard key={index} {...action} />
-            ))}
-          </div>
-        </div>
 
         {/* Charts Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
