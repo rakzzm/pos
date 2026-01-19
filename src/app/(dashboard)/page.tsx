@@ -44,32 +44,8 @@ const COLORS = ['#3B82F6', '#06B6D4', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6'
 const formatCurrency = (amount: number) => `₹${amount.toFixed(2)}`;
 
 // Sample data for charts
-const salesTrendData = [
-  { name: 'Mon', sales: 4000, orders: 24 },
-  { name: 'Tue', sales: 3000, orders: 18 },
-  { name: 'Wed', sales: 5000, orders: 32 },
-  { name: 'Thu', sales: 4500, orders: 28 },
-  { name: 'Fri', sales: 6000, orders: 38 },
-  { name: 'Sat', sales: 8000, orders: 52 },
-  { name: 'Sun', sales: 7000, orders: 45 }
-];
 
 
-
-const hourlyData = [
-  { hour: '9AM', orders: 5 },
-  { hour: '10AM', orders: 12 },
-  { hour: '11AM', orders: 18 },
-  { hour: '12PM', orders: 35 },
-  { hour: '1PM', orders: 42 },
-  { hour: '2PM', orders: 28 },
-  { hour: '3PM', orders: 15 },
-  { hour: '4PM', orders: 8 },
-  { hour: '5PM', orders: 22 },
-  { hour: '6PM', orders: 38 },
-  { hour: '7PM', orders: 45 },
-  { hour: '8PM', orders: 32 }
-];
 
 const MetricCard = ({ 
   title, 
@@ -370,7 +346,7 @@ export default function DashboardPage() {
             </h2>
             <div className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={salesTrendData}>
+                <AreaChart data={summary.salesTrend || []}>
                   <defs>
                     <linearGradient id="salesGradient" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.3}/>
@@ -448,11 +424,12 @@ export default function DashboardPage() {
             </h2>
             <div className="h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={hourlyData}>
+                <BarChart data={summary.hourlySales || []}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
                   <XAxis dataKey="hour" stroke="#6B7280" />
                   <YAxis stroke="#6B7280" />
                   <Tooltip 
+                    cursor={{ fill: 'rgba(59, 130, 246, 0.1)' }}
                     contentStyle={{ 
                       backgroundColor: 'white', 
                       border: 'none',
@@ -460,7 +437,11 @@ export default function DashboardPage() {
                       boxShadow: '0 10px 25px rgba(0,0,0,0.1)'
                     }}
                   />
-                  <Bar dataKey="orders" fill="#3B82F6" radius={[4, 4, 0, 0]} />
+                  <Bar 
+                    dataKey="orders" 
+                    fill="#3B82F6" 
+                    radius={[4, 4, 0, 0]} 
+                  />
                 </BarChart>
               </ResponsiveContainer>
             </div>

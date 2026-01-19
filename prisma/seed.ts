@@ -806,7 +806,13 @@ async function main() {
         where: { orderNumber: orderData.orderNumber }
       });
 
-      if (!exists) {
+      if (exists) {
+         // Update date to now if it exists to ensure dashboard shows data "today"
+         await prisma.order.update({
+             where: { orderNumber: orderData.orderNumber },
+             data: { date: orderData.date }
+         });
+      } else {
         // Resolve member ID if present
         let memberDbId = null;
         if (orderData.memberId) {

@@ -27,6 +27,15 @@ type SalesSummary = {
     value: number;
     sales: number;
   }>;
+  salesTrend: Array<{
+    name: string;
+    sales: number;
+    orders: number;
+  }>;
+  hourlySales: Array<{
+    hour: string;
+    orders: number;
+  }>;
 };
 
 type Period = 'today' | 'yesterday' | 'week' | 'month';
@@ -112,6 +121,78 @@ export const useSalesStore = create<SalesStore>((set) => ({
          return { name, value, sales };
       }).sort((a, b) => b.sales - a.sales); // CSS colors often match order, so sorting helps consistency
 
+      // Calculate Sales Trend (Last 7 Days)
+      const trendMap = new Map<string, { sales: number; orders: number }>();
+      const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      
+      // Initialize last 7 days including today
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date(today);
+        d.setDate(d.getDate() - i);
+        const dayName = days[d.getDay()];
+        // If multiple days have same name (unlikely in 7 days), usage of date string key is safer but chart uses simple name
+        // We will just use dayName for simplicity as per requirement
+        trendMap.set(dayName, { sales: 0, orders: 0 });
+      }
+
+      orders.forEach(order => { // Use all orders, not just filtered for trend? Usually trend is fixed range (e.g. week)
+        const d = new Date(order.date);
+        // Check if within last 7 days
+        const diffTime = Math.abs(now.getTime() - d.getTime());
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+        
+        if (diffDays <= 7 && order.status === 'completed') {
+           const dayName = days[d.getDay()];
+           if (trendMap.has(dayName)) {
+             const current = trendMap.get(dayName)!;
+             trendMap.set(dayName, { 
+               sales: current.sales + order.total, 
+               orders: current.orders + 1 
+             });
+           }
+        }
+      });
+      
+      // Ensure order is chronological (Mon, Tue... relative to today) - Chart expects array
+      // Re-construct based on 7 days loop to maintain order
+      const salesTrend = [];
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date(today);
+        d.setDate(d.getDate() - i);
+        const dayName = days[d.getDay()];
+        const data = trendMap.get(dayName) || { sales: 0, orders: 0 };
+        salesTrend.push({ name: dayName, ...data });
+      }
+
+      // Calculate Hourly Sales (For Today, if period is 'today' or regardless? Dashboard usually shows 'Orders by Hour' for current day)
+      // We will calculate for 'Today' always for that specific chart
+      const hourlyMap = new Map<string, number>();
+      const hourlySales = [];
+      const ampm = (h: number) => h < 12 ? `${h === 0 ? 12 : h}AM` : `${h === 12 ? 12 : h - 12}PM`;
+      
+      // Init hours 9AM to 9PM (business hours)
+      for (let i = 9; i <= 21; i++) {
+         const label = ampm(i);
+         hourlyMap.set(label, 0);
+      }
+
+      orders.forEach(order => {
+        const d = new Date(order.date);
+        // Check if it is today
+        if (d.getDate() === today.getDate() && d.getMonth() === today.getMonth() && d.getFullYear() === today.getFullYear()) {
+           const hour = d.getHours();
+           const label = ampm(hour);
+           if (hourlyMap.has(label)) { // Only count business hours or add logic
+              hourlyMap.set(label, (hourlyMap.get(label) || 0) + 1);
+           }
+        }
+      });
+
+      // Convert to array
+      for (const [hour, count] of hourlyMap.entries()) {
+        hourlySales.push({ hour, orders: count });
+      }
+
       const summary: SalesSummary = {
         grossAmount: totalAmount,
         netSales: totalAmount * 0.9, // Assuming 10% goes to various deductions
@@ -132,7 +213,9 @@ export const useSalesStore = create<SalesStore>((set) => ({
         customerAverageValue: uniqueCustomers ? totalAmount / uniqueCustomers : 0,
         openOrderQuantity: pendingOrders.length,
         openOrderAmount: pendingOrders.reduce((sum, order) => sum + order.total, 0),
-        categoryBreakdown
+        categoryBreakdown,
+        salesTrend,
+        hourlySales
       };
 
       set({ summary });
