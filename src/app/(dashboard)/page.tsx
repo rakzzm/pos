@@ -35,7 +35,7 @@ import {
 } from 'lucide-react';
 import { useSalesStore } from '../../stores/salesStore';
 import { useProductStore } from '../../stores/productStore';
-// import { useOrderStore } from '../../stores/orderStore';
+import { useOrderStore } from '../../stores/orderStore';
 import { useMemberStore } from '../../stores/memberStore';
 import { useInvoiceStore } from '../../stores/invoiceStore';
 import { QrCode, Brain, FileText } from 'lucide-react';
@@ -166,12 +166,24 @@ export default function DashboardPage() {
   const [selectedPeriod, setSelectedPeriod] = useState<'today' | 'yesterday' | 'week' | 'month'>('today');
   const { getInvoiceStats } = useInvoiceStore();
   const { summary, loading, error, calculateSummary } = useSalesStore();
-  const { products } = useProductStore();
+  const { products, fetchProducts } = useProductStore();
+  const { orders, fetchOrders } = useOrderStore(); // Fetch orders for summary
+  const { members, fetchMembers } = useMemberStore();
   // const { activeStaff } = useAttendanceStore(); // Assuming similar accessor or we count them
 
   useEffect(() => {
-    calculateSummary(selectedPeriod);
-  }, [selectedPeriod, calculateSummary]);
+    // Initial Data Load
+    fetchProducts();
+    fetchOrders();
+    fetchMembers();
+  }, [fetchProducts, fetchOrders, fetchMembers]);
+
+  useEffect(() => {
+    // Recalculate summary when orders or period changes
+    if (orders.length > 0) {
+      calculateSummary(selectedPeriod);
+    }
+  }, [selectedPeriod, calculateSummary, orders]);
   
   const invoiceStats = getInvoiceStats();
   
@@ -293,6 +305,20 @@ export default function DashboardPage() {
               Last updated: {new Date().toLocaleTimeString()}
             </div>
           </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {quickActions.map((action, index) => (
+            <QuickActionCard
+              key={index}
+              title={action.title}
+              description={action.description}
+              icon={action.icon}
+              color={action.color}
+              onClick={action.onClick}
+            />
+          ))}
         </div>
 
         {/* Key Metrics */}
