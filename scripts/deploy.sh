@@ -19,6 +19,6 @@ sleep 10
 # Run Seed (optional, but good to ensure DB is in sync)
 echo "🌱 Ensuring database is seeded..."
 # execute seed inside the running container
-docker compose exec -T web npx prisma db seed
+docker compose exec -T app npx prisma db seed
 
 echo "✅ Deployment update complete! Server should be up and running."
