@@ -199,12 +199,10 @@ export default function DashboardLayout({
           {/* Header */}
           <div className="flex h-20 items-center justify-between px-4 pt-4 pb-2">
             <div className="flex items-center justify-center w-full">
-              <div className="relative w-full h-12 bg-white rounded-lg shadow-lg p-1">
-                <img
-                  src="/images/logo.png"
-                  alt="Adavakkad Collections"
-                  className="object-contain w-full h-full"
-                />
+              <div className="relative w-full h-12 bg-white/10 backdrop-blur-md rounded-xl shadow-lg p-1 flex items-center justify-center border border-white/20">
+                <span className="text-2xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300">
+                  MEGH POS
+                </span>
               </div>
             </div>
             <button
@@ -273,12 +271,10 @@ export default function DashboardLayout({
             >
               <Menu className="h-6 w-6" />
             </button>
-            <div className="h-10">
-              <img
-                src="/images/logo.png"
-                alt="Adavakkad Collections"
-                className="h-full object-contain"
-              />
+            <div className="h-10 flex items-center">
+              <span className="text-xl font-black tracking-tight text-gray-900">
+                MEGH POS
+              </span>
             </div>
             <div className="w-6"></div>
           </div>

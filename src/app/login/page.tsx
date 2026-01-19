@@ -47,8 +47,8 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-sky-400 via-pink-100 to-sky-200">
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
-          <p className="mt-2 text-2xl font-bold text-sky-800">
-            Adavakkad Point of Sales System
+          <p className="mt-2 text-3xl font-black tracking-tight text-sky-800">
+            MEGH POS
           </p>
           <p className="mt-2 text-sm text-sky-700">
             Sign in to access your dashboard

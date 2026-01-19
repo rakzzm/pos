@@ -8,7 +8,7 @@ import { ChatbotWrapper } from '../components/ChatbotWrapper';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Adavakkad Collections POS',
+  title: 'Megh POS',
   description: 'Point of Sale System',
 };
 
