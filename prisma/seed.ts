@@ -16,14 +16,6 @@ async function main() {
       role: 'admin',
       locationId: 'loc1',
       status: 'active'
-    },
-    {
-      email: 'admin@adavakkad.com',
-      password: 'admin123',
-      name: 'New Admin',
-      role: 'admin',
-      locationId: 'loc1',
-      status: 'active'
     }
   ];
 
@@ -89,35 +81,6 @@ async function main() {
         attendance: 98,
         salesTarget: 1000000,
         salesAchieved: 1200000
-      }
-    },
-    {
-      name: 'New Admin',
-      role: 'Admin',
-      email: 'admin@adavakkad.com',
-      password: 'admin123',
-      phone: '9998887776',
-      status: 'active',
-      employeeId: 'EMP999',
-      joinDate: new Date('2024-01-01'),
-      salary: 45000,
-      position: 'System Admin',
-      department: 'IT',
-      emergencyContact: 'None',
-      address: 'Remote',
-      shiftStart: '09:00',
-      shiftEnd: '18:00',
-      hireDate: new Date('2024-01-01'),
-      leaveBalance: {
-        sick: 10,
-        annual: 10,
-        personal: 10
-      },
-      performance: {
-        rating: 5.0,
-        attendance: 100,
-        salesTarget: 0,
-        salesAchieved: 0
       }
     },
     {
