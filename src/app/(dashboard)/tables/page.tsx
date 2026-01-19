@@ -106,14 +106,14 @@ export default function TablesPage() {
                 </div>
                 <div className="p-2 bg-white rounded-lg">
                   <QRCodeSVG
-                    value={`https://adavakkadpos.store/menu/table${tableNum}`}
+                    value={`https://meghcommunication.com/menu/table${tableNum}`}
                     size={200}
                     level="H"
                     includeMargin={true}
                   />
                 </div>
                 <div className="mt-4 pt-4 border-t border-gray-100 w-full">
-                  <p className="text-xs text-gray-400 font-medium tracking-wider uppercase">Adavakkad Collections</p>
+                  <p className="text-xs text-gray-400 font-medium tracking-wider uppercase">Megh Communication</p>
                 </div>
               </div>
             ))}

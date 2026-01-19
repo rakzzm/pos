@@ -73,7 +73,7 @@ export default function InvoicesPage() {
     // Add Company Logo/Header
     doc.setFontSize(20);
     doc.setTextColor(40, 40, 40);
-    doc.text('Advakkad Restaurant', 14, 22);
+    doc.text('Megh Communication', 14, 22);
     
     doc.setFontSize(10);
     doc.setTextColor(100, 100, 100);

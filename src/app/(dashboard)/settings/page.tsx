@@ -39,10 +39,10 @@ export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState('business');
   const [settings, setSettings] = useState({
     // Business Settings
-    businessName: 'Adavakkad Collections',
+    businessName: 'Megh Communication',
     businessAddress: '123 Main Street, City',
     businessPhone: '+91 1234567890',
-    businessEmail: 'info@adavakkad.com',
+    businessEmail: 'info@meghcommunication.com',
     currency: 'INR',
     taxRate: '18',
     timezone: 'Asia/Kolkata',
@@ -83,7 +83,7 @@ export default function SettingsPage() {
   const [loading, setLoading] = useState(false);
 
   // QR Code State
-  const [qrData, setQrData] = useState('https://adavakkadpos.store');
+  const [qrData, setQrData] = useState('https://meghcommunication.com');
   const [qrType, setQrType] = useState('url');
   const [qrSize, setQrSize] = useState(256);
   const [qrColor, setQrColor] = useState('#000000');
@@ -94,25 +94,25 @@ export default function SettingsPage() {
   // QR Form Data
   const [qrFormData, setQrFormData] = useState({
     // URL
-    url: 'https://adavakkadpos.store',
+    url: 'https://meghcommunication.com',
     // WiFi
-    wifiSSID: 'Restaurant WiFi',
+    wifiSSID: 'Megh WiFi',
     wifiPassword: 'password123',
     wifiEncryption: 'WPA',
     // Contact (vCard)
-    contactName: 'Restaurant Manager',
+    contactName: 'Manager',
     contactPhone: '+91 1234567890',
-    contactEmail: 'manager@adavakkad.com',
+    contactEmail: 'info@meghcommunication.com',
     contactAddress: '123 Main St, City',
     // SMS
     smsNumber: '+91 1234567890',
-    smsMessage: 'Hello from our restaurant!',
+    smsMessage: 'Hello from Megh Communication!',
     // Email
-    emailTo: 'info@adavakkad.com',
+    emailTo: 'info@meghcommunication.com',
     emailSubject: 'Inquiry',
     emailBody: 'Hello, I would like to...',
     // Menu
-    menuURL: 'https://adavakkadpos.store/menu/table1',
+    menuURL: 'https://meghcommunication.com/menu/table1',
     // Payment
     upiId: 'restaurant@upi',
     amount: '',

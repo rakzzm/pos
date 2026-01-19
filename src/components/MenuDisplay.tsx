@@ -82,7 +82,7 @@ export const MenuDisplay: React.FC<MenuDisplayProps> = ({ tableId }) => {
         <div className="max-w-md mx-auto px-4 py-4">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Adavakkad</h1>
+              <h1 className="text-2xl font-bold text-gray-900">Megh Communication</h1>
               {tableId && (
                 <p className="text-orange-600 font-medium text-sm flex items-center gap-1">
                   <Utensils className="h-4 w-4" />
