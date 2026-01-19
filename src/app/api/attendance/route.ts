@@ -44,6 +44,7 @@ export async function GET(request: Request) {
       },
     });
 
+    console.log(`[API] Fetched ${attendance.length} attendance records for params:`, { staffId, date, month });
     return NextResponse.json(attendance);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch attendance' }, { status: 500 });
