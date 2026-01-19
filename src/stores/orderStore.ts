@@ -77,7 +77,7 @@ export const useOrderStore = create<OrderStore>((set, get) => ({
         // Calculate itemCount from items array
         itemCount: order.items.reduce((sum: number, item: any) => sum + item.quantity, 0),
         // Ensure date is string if needed
-        date: new Date(order.date).toLocaleString(), // or keep as ISO string depending on UI needs
+        date: order.date, // Keep as ISO string for logic
       }));
 
       set({ orders: mappedOrders });
@@ -90,15 +90,13 @@ export const useOrderStore = create<OrderStore>((set, get) => ({
 
   addOrder: async (orderData: NewOrder) => {
     set({ loading: true, error: null });
+    // ... (rest of addOrder logic)
     try {
-      // Generate fields that are required by API but might be missing in FE submit
-      // Actually API generates orderNumber if we want, but passing it is safer if we have logic
-      // Here we assume FE or Store generates simple Order Number for now, or let API handle it.
-      // API expects orderNumber, so let's generate it if not present, though DB handles unique check.
+      // ...
       
       const payload = {
         ...orderData,
-        orderNumber: `ORD-${Date.now()}`, // Simple unique generator for now
+        orderNumber: `ORD-${Date.now()}`,
       };
 
       const response = await fetch('/api/orders', {
@@ -113,7 +111,7 @@ export const useOrderStore = create<OrderStore>((set, get) => ({
       const mappedOrder: Order = {
         ...newOrder,
         itemCount: newOrder.items.reduce((sum: number, item: any) => sum + item.quantity, 0),
-        date: new Date(newOrder.date).toLocaleString(),
+        date: newOrder.date, // Keep as ISO string
       };
 
       set(state => ({
@@ -147,7 +145,7 @@ export const useOrderStore = create<OrderStore>((set, get) => ({
       const mappedOrder: Order = {
         ...updatedOrderData,
         itemCount: updatedOrderData.items.reduce((sum: number, item: any) => sum + item.quantity, 0),
-        date: new Date(updatedOrderData.date).toLocaleString(),
+        date: updatedOrderData.date, // Keep as ISO string
       };
       
       const previousOrder = get().orders.find(o => o.id === id);
@@ -183,7 +181,7 @@ export const useOrderStore = create<OrderStore>((set, get) => ({
       const mappedOrder: Order = {
         ...updatedOrderData,
         itemCount: updatedOrderData.items.reduce((sum: number, item: any) => sum + item.quantity, 0),
-        date: new Date(updatedOrderData.date).toLocaleString(),
+        date: updatedOrderData.date, // Keep as ISO string
       };
 
       const previousOrder = get().orders.find(o => o.id === id);

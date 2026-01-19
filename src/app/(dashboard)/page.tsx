@@ -164,7 +164,7 @@ const QuickActionCard = ({ title, description, icon: Icon, onClick, color = 'blu
 export default function DashboardPage() {
   const router = useRouter();
   const [selectedPeriod, setSelectedPeriod] = useState<'today' | 'yesterday' | 'week' | 'month'>('today');
-  const { getInvoiceStats } = useInvoiceStore();
+  const { getInvoiceStats, fetchInvoices } = useInvoiceStore();
   const { summary, loading, error, calculateSummary } = useSalesStore();
   const { products, fetchProducts } = useProductStore();
   const { orders, fetchOrders } = useOrderStore(); // Fetch orders for summary
@@ -176,7 +176,8 @@ export default function DashboardPage() {
     fetchProducts();
     fetchOrders();
     fetchMembers();
-  }, [fetchProducts, fetchOrders, fetchMembers]);
+    fetchInvoices();
+  }, [fetchProducts, fetchOrders, fetchMembers, fetchInvoices]);
 
   useEffect(() => {
     // Recalculate summary when orders or period changes
