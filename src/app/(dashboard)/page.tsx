@@ -211,13 +211,7 @@ export default function DashboardPage() {
       color: 'red',
       onClick: () => router.push('/reports')
     },
-    {
-      title: 'Manage Staff',
-      description: 'Staff and attendance',
-      icon: Users,
-      color: 'blue',
-      onClick: () => router.push('/staff')
-    }
+
   ];
 
   if (loading) {
