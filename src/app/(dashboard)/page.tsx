@@ -165,7 +165,13 @@ export default function DashboardPage() {
   const router = useRouter();
   const [selectedPeriod, setSelectedPeriod] = useState<'today' | 'yesterday' | 'week' | 'month'>('today');
   const { getInvoiceStats } = useInvoiceStore();
+  const { summary, loading, error, calculateSummary } = useSalesStore();
+  const { products } = useProductStore();
   // const { activeStaff } = useAttendanceStore(); // Assuming similar accessor or we count them
+
+  useEffect(() => {
+    calculateSummary(selectedPeriod);
+  }, [selectedPeriod, calculateSummary]);
   
   const invoiceStats = getInvoiceStats();
   
