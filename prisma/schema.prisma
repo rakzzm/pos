@@ -100,83 +100,9 @@ model Member {
   @@map("members")
 }
 
-model Staff {
-  id                 String   @id @default(uuid())
-  employeeId         String   @unique
-  name               String
-  email              String
-  phone              String
-  position           String
-  department         String
-  hireDate           DateTime
-  salary             Float
-  status             String   // 'active' | 'inactive' | 'on-leave'
-  leaveBalanceAnnual Int
-  leaveBalanceSick   Int
-  leaveBalancePersonal Int
-  performanceRating  Float
-  lastReview         DateTime?
-  leaveRequests      LeaveRequest[]
-  attendanceRecords  Attendance[]
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-  payrollRecords     Payroll[]
 
-  @@map("staff")
-}
 
-model Payroll {
-  id            String   @id @default(uuid())
-  staffId       String
-  staff         Staff    @relation(fields: [staffId], references: [id])
-  payPeriodStart DateTime
-  payPeriodEnd   DateTime
-  payDate       DateTime
-  basicSalary   Float
-  bonuses       Float    @default(0)
-  deductions    Float    @default(0)
-  netSalary     Float
-  status        String   // 'pending' | 'processed' | 'paid'
-  paymentMethod String?
-  notes         String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
 
-  @@map("payroll")
-}
-
-model LeaveRequest {
-  id          String   @id @default(uuid())
-  staffId     String
-  staff       Staff    @relation(fields: [staffId], references: [id])
-  type        String   // 'annual' | 'sick' | 'personal' | 'emergency'
-  startDate   DateTime
-  endDate     DateTime
-  reason      String
-  status      String   // 'pending' | 'approved' | 'rejected'
-  appliedDate DateTime
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@map("leave_requests")
-}
-
-model Attendance {
-  id         String   @id @default(uuid())
-  staffId    String
-  staff      Staff    @relation(fields: [staffId], references: [id])
-  date       DateTime
-  punchIn    String?
-  punchOut   String?
-  totalHours Float
-  status     String   // 'present' | 'absent' | 'late' | 'half-day'
-  location   String?
-  notes      String?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-
-  @@map("attendance")
-}
 
 model AuditLog {
   id        String   @id @default(uuid())
