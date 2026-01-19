@@ -10,7 +10,7 @@ async function main() {
   // Only create the specific admin user requested
   const users = [
     {
-      email: 'abhilash@advakkad.com',
+      email: 'abhilash@adavakkad.com',
       password: 'admin123456',
       name: 'Abhilash', // Assuming name from email
       role: 'admin',
@@ -65,7 +65,7 @@ async function main() {
     {
       name: 'Abhilash',
       role: 'Admin',
-      email: 'abhilash@advakkad.com',
+      email: 'abhilash@adavakkad.com',
       password: 'admin123456', // Will be hashed in real app
       phone: '9876543210',
       status: 'active',
